@@ -36,17 +36,46 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(schedules: List<Schedule>) {
-    Column(Modifier.fillMaxHeight()) {
+
+    Column(modifier = Modifier.fillMaxHeight()) {
         Row(Modifier.fillMaxWidth()) {
-            Text(text = "Your Schedules", modifier = Modifier.padding(all = 20.dp).padding(top=15.dp))
+            Text(text = "Your Schedules", modifier = Modifier
+                .padding(all = 20.dp)
+                .padding(top = 15.dp))
             Spacer(modifier = Modifier.width(140.dp))
             Button(onClick = {/*placeholder*/ }) {
                 Text(text = "edit ", modifier = Modifier.padding(all = 20.dp))
             }
         }
         schedules.forEach{ scheduleName ->
-            Button(onClick = {/*placeholder*/ },modifier = Modifier.fillMaxWidth().padding(all=10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
+            Button(onClick = {/*placeholder*/ },modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
                 Text(text = scheduleName.firstProperty, Modifier.padding(all = 20.dp))
+            }
+        }
+        Spacer(modifier = Modifier.height(50.dp))
+
+
+
+        var pageNum by remember{
+            mutableStateOf(1)
+        }
+        var totalPageNum by remember{
+            mutableStateOf(7)
+        }
+        Row(Modifier.fillMaxWidth()) {
+            Text(text = "Page "+pageNum+ " out of "+ totalPageNum, modifier = Modifier
+                .padding(all = 20.dp)
+                .padding(top = 15.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+        Row(Modifier.fillMaxWidth()) {
+            Button(onClick = {if(pageNum>1)pageNum--}) {
+                Text(text = "Previous ", modifier = Modifier.padding(all = 20.dp))
+            }
+            Button(onClick = {if(pageNum<totalPageNum)pageNum++}) {
+                Text(text = "Next ", modifier = Modifier.padding(all = 20.dp).width(80.dp))
             }
         }
     }
