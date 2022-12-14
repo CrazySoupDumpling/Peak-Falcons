@@ -27,6 +27,8 @@ class MainActivity : ComponentActivity() {
                     list.add(Schedule("Hi"))
                     list.add(Schedule("Middle"))
                     list.add(Schedule("Bye"))
+                    list.add(Schedule("After End"))
+                    list.add(Schedule("Later"))
                     Greeting(list)
                 }
             }
@@ -47,22 +49,24 @@ fun Greeting(schedules: List<Schedule>) {
                 Text(text = "edit ", modifier = Modifier.padding(all = 20.dp))
             }
         }
-
+        val EntriesPerPage = 2
         var schedNumStart by remember{
             mutableStateOf(0)
         }
         var schedNumEnd by remember{
             mutableStateOf(1)
         }
-        for(i in schedNumStart..schedNumEnd){
+        for(i in schedNumStart..minOf(schedNumEnd, schedules.size-1)){
             Button(onClick = {/*placeholder*/ },modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
-                Text(text = schedules[i].firstProperty,
-                    Modifier
-                        .padding(all = 20.dp)
-                        .padding(top = 20.dp))
-            }
+                    Text(
+                        text = schedules[i].firstProperty,
+                        Modifier
+                            .padding(all = 20.dp)
+                            .padding(top = 20.dp)
+                    )
+                }
         }
 //        schedules.forEach{ scheduleName ->
 //            Button(onClick = {/*placeholder*/ },modifier = Modifier.fillMaxWidth().padding(all=10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
@@ -72,8 +76,16 @@ fun Greeting(schedules: List<Schedule>) {
         var pageNum by remember{
             mutableStateOf(1)
         }
+        var pages by remember{
+            mutableStateOf((schedules.size / 2))
+        }
         val totalPageNum by remember{
-            mutableStateOf(7)
+
+
+            if (schedules.size % EntriesPerPage != 0 && schedules.size > EntriesPerPage) {
+                pages = (schedules.size / 2) + 1
+            }
+            mutableStateOf(pages)
         }
 
         Row(Modifier.fillMaxWidth()) {
@@ -85,17 +97,17 @@ fun Greeting(schedules: List<Schedule>) {
         Row(Modifier.fillMaxWidth()) {
             Button(onClick = {if(pageNum>1) {
                 pageNum--
-                schedNumEnd--
-                if(schedNumStart>0)schedNumStart--
+                schedNumEnd -= EntriesPerPage
+                if(schedNumStart>0)schedNumStart -= EntriesPerPage
             }}) {
-                Text(text = "Previous ", modifier = Modifier.padding(all = 20.dp))
+                Text(text = "Previous", modifier = Modifier.padding(all = 20.dp))
             }
             Button(onClick = {if(pageNum<totalPageNum) {
                 pageNum++
-                schedNumStart++
-                if(schedNumEnd<totalPageNum)schedNumEnd++
+                schedNumStart += EntriesPerPage
+                if(schedNumEnd<schedules.size)schedNumEnd += EntriesPerPage
             }}) {
-                Text(text = "Next ", modifier = Modifier.padding(all = 20.dp))
+                Text(text = "Next", modifier = Modifier.padding(all = 20.dp))
             }
         }
     }
@@ -109,6 +121,8 @@ fun DefaultPreview() {
         list.add(Schedule("Hi"))
         list.add(Schedule("Middle"))
         list.add(Schedule("Bye"))
+        list.add(Schedule("After End"))
+        list.add(Schedule("Later"))
         Greeting(list)
     }
 }
