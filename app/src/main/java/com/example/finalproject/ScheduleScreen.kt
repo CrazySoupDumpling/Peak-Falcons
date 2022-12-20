@@ -1,5 +1,6 @@
 package com.example.finalproject
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -25,7 +26,7 @@ fun ScheduleScreen(
                 .padding(all = 20.dp)
                 .padding(top = 15.dp))
             Spacer(modifier = Modifier.width(140.dp))
-            Button(onClick = {navController.navigate(route = Screens.Edit.route)}) {
+            Button(onClick = {navController.navigate(route = Screens.Edit.route);Log.e("myTag", "navigate")}) {
                 Text(text = "edit ", modifier = Modifier.padding(all = 20.dp))
             }
         }
@@ -82,7 +83,9 @@ fun ScheduleScreen(
             }}) {
                 Text(text = "Previous", modifier = Modifier.padding(all = 20.dp))
             }
-            Button(onClick = {if(pageNum<totalPageNum) {
+            Button(onClick = {
+                Log.e("myTag", "This is my message")
+                if(pageNum<totalPageNum) {
                 pageNum++
                 schedNumStart += EntriesPerPage
                 if(schedNumEnd<schedules.size)schedNumEnd += EntriesPerPage
@@ -93,16 +96,18 @@ fun ScheduleScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    FinalProjectTheme {
-        val list = ArrayList<Schedule>()
-        list.add(Schedule("Hi"))
-        list.add(Schedule("Middle"))
-        list.add(Schedule("Bye"))
-        list.add(Schedule("After End"))
-        list.add(Schedule("Later"))
-        ScheduleScreen(list, rememberNavController())
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+//    FinalProjectTheme {
+//        val list = ArrayList<Schedule>()
+//        list.add(Schedule("Hi"))
+//        list.add(Schedule("Middle"))
+//        list.add(Schedule("Bye"))
+//        list.add(Schedule("After End"))
+//        list.add(Schedule("Later"))
+//        var navController = rememberNavController()
+//        SetupNavGraph(navController = navController)
+//        ScheduleScreen(list, navController = navController)
+//    }
+//}

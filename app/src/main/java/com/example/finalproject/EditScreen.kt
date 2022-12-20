@@ -4,6 +4,7 @@ import android.os.Bundle
 //import android.util.DisplayMetrics
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -19,7 +20,7 @@ import com.example.finalproject.ui.theme.FinalProjectTheme
 fun EditScreen(
     navController: NavController
 ) {
-    Column(Modifier.fillMaxHeight()) {
+    Column(Modifier.fillMaxHeight().background((Color.Red))) {
             Text(text = "Edit Screen", Modifier.align(Alignment.CenterHorizontally))
     }
 }

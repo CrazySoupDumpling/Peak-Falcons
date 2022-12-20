@@ -1,6 +1,7 @@
 package com.example.finalproject
 
 import android.os.Bundle
+import android.util.Log
 //import android.util.DisplayMetrics
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,17 +29,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
+                    Log.e("myTag", "This is my message");
                     navController = rememberNavController()
                     SetupNavGraph(navController = navController)
 
-                    val list = ArrayList<Schedule>()
-                    list.add(Schedule("Hi"))
-                    list.add(Schedule("Middle"))
-                    list.add(Schedule("Bye"))
-                    list.add(Schedule("After End"))
-                    list.add(Schedule("Later"))
-                    ScheduleScreen(list, navController)
+//                    val list = ArrayList<Schedule>()
+//                    list.add(Schedule("Hi"))
+//                    list.add(Schedule("Middle"))
+//                    list.add(Schedule("Bye"))
+//                    list.add(Schedule("After End"))
+//                    list.add(Schedule("Later"))
+//                    ScheduleScreen(list, navController)
                 }
             }
         }
