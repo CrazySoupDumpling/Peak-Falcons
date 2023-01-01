@@ -38,11 +38,11 @@ fun ScheduleScreen(
             mutableStateOf(EntriesPerPage-1)
         }
         for(i in schedNumStart..minOf(schedNumEnd, schedules.size-1)){
-            Button(onClick = {/*placeholder*/ },modifier = Modifier
+            Button(onClick = {navController.navigate(route= Screens.Checklist.route, x = schedules[i]) },modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
                 Text(
-                    text = schedules[i].firstProperty,
+                    text = schedules[i].name,
                     Modifier
                         .padding(all = 20.dp)
                         .padding(top = 20.dp)

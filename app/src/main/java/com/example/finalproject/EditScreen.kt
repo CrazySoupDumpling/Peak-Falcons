@@ -45,7 +45,7 @@ fun EditScreen(
                 .fillMaxWidth()
                 .padding(all = 10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
                 Text(
-                    text = schedules[i].firstProperty,
+                    text = schedules[i].name,
                     Modifier
                         .padding(all = 20.dp)
                         .padding(top = 20.dp)

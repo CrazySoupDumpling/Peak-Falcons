@@ -33,5 +33,12 @@ fun SetupNavGraph(
             list.add(Schedule("Later"))
             EditScreen(list, navController = navController)
         }
+        composable(
+            route = Screens.Checklist.route
+        ){
+
+            ChecklistScreen(schedule = Schedule("Test"), navController = navController)
+
+        }
     }
 }
