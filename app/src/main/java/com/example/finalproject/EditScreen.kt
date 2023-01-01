@@ -1,6 +1,7 @@
 package com.example.finalproject
 
 import android.os.Bundle
+import android.util.Log
 //import android.util.DisplayMetrics
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,9 +19,89 @@ import com.example.finalproject.ui.theme.FinalProjectTheme
 
 @Composable
 fun EditScreen(
+    schedules: List<Schedule>,
     navController: NavController
 ) {
-    Column(Modifier.fillMaxHeight().background((Color.Red))) {
-            Text(text = "Edit Screen", Modifier.align(Alignment.CenterHorizontally))
+    Column(Modifier.fillMaxHeight()) {
+
+        Row(Modifier.fillMaxWidth()) {
+            Text(text = "Edit Your Schedules", modifier = Modifier
+                .padding(all = 20.dp)
+                .padding(top = 15.dp))
+            Spacer(modifier = Modifier.width(70.dp))
+            Button(onClick = {navController.navigate(route = Screens.Schedule.route)}) {
+                Text(text = "Done ", modifier = Modifier.padding(all = 20.dp))
+            }
+        }
+        val EntriesPerPage = 3
+        var schedNumStart by remember{
+            mutableStateOf(0)
+        }
+        var schedNumEnd by remember{
+            mutableStateOf(EntriesPerPage-1)
+        }
+        for(i in schedNumStart..minOf(schedNumEnd, schedules.size-1)){
+            Button(onClick = {/*placeholder*/ },modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
+                Text(
+                    text = schedules[i].firstProperty,
+                    Modifier
+                        .padding(all = 20.dp)
+                        .padding(top = 20.dp)
+                )
+            }
+        }
+
+        Button(onClick = {/*placeholder*/},modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = 10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
+            Text(
+                text = "Create New Schedule",
+                Modifier
+                    .padding(all = 20.dp)
+                    .padding(top = 20.dp)
+            )
+        }
+
+        var pageNum by remember{
+            mutableStateOf(1)
+        }
+        var pages by remember{
+            mutableStateOf((schedules.size / EntriesPerPage))
+        }
+        val totalPageNum by remember{
+
+
+            if (schedules.size % EntriesPerPage != 0 && schedules.size > EntriesPerPage) {
+                pages = (schedules.size / EntriesPerPage) + 1
+            }
+            mutableStateOf(pages)
+        }
+
+        Row(Modifier.fillMaxWidth()) {
+            Text(text = "Page $pageNum out of $totalPageNum", modifier = Modifier
+                .padding(all = 20.dp)
+                .padding(top = 15.dp))
+
+        }
+        Row(Modifier.fillMaxWidth()) {
+            Button(onClick = {if(pageNum>1) {
+                pageNum--
+                schedNumEnd -= EntriesPerPage
+                if(schedNumStart>0)schedNumStart -= EntriesPerPage
+            }}) {
+                Text(text = "Previous", modifier = Modifier.padding(all = 20.dp))
+            }
+            Button(onClick = {
+                Log.e("myTag", "This is my message")
+                if(pageNum<totalPageNum) {
+                    pageNum++
+                    schedNumStart += EntriesPerPage
+                    if(schedNumEnd<schedules.size)schedNumEnd += EntriesPerPage
+                }}) {
+                Text(text = "Next", modifier = Modifier.padding(all = 20.dp))
+            }
+        }
     }
 }

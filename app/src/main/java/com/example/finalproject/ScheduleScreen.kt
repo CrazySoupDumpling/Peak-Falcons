@@ -26,16 +26,16 @@ fun ScheduleScreen(
                 .padding(all = 20.dp)
                 .padding(top = 15.dp))
             Spacer(modifier = Modifier.width(140.dp))
-            Button(onClick = {navController.navigate(route = Screens.Edit.route);Log.e("myTag", "navigate")}) {
+            Button(onClick = {navController.navigate(route = Screens.Edit.route)}) {
                 Text(text = "edit ", modifier = Modifier.padding(all = 20.dp))
             }
         }
-        val EntriesPerPage = 2
+        val EntriesPerPage = 3
         var schedNumStart by remember{
             mutableStateOf(0)
         }
         var schedNumEnd by remember{
-            mutableStateOf(1)
+            mutableStateOf(EntriesPerPage-1)
         }
         for(i in schedNumStart..minOf(schedNumEnd, schedules.size-1)){
             Button(onClick = {/*placeholder*/ },modifier = Modifier
@@ -58,13 +58,13 @@ fun ScheduleScreen(
             mutableStateOf(1)
         }
         var pages by remember{
-            mutableStateOf((schedules.size / 2))
+            mutableStateOf((schedules.size / EntriesPerPage))
         }
         val totalPageNum by remember{
 
 
             if (schedules.size % EntriesPerPage != 0 && schedules.size > EntriesPerPage) {
-                pages = (schedules.size / 2) + 1
+                pages = (schedules.size / EntriesPerPage) + 1
             }
             mutableStateOf(pages)
         }

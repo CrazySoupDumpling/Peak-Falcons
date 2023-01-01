@@ -25,7 +25,13 @@ fun SetupNavGraph(
         composable(
             route = Screens.Edit.route
         ){
-            EditScreen(navController = navController)
+            val list = ArrayList<Schedule>()
+            list.add(Schedule("Hi"))
+            list.add(Schedule("Middle"))
+            list.add(Schedule("Bye"))
+            list.add(Schedule("After End"))
+            list.add(Schedule("Later"))
+            EditScreen(list, navController = navController)
         }
     }
 }
