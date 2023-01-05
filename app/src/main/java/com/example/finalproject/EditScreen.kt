@@ -1,5 +1,6 @@
 package com.example.finalproject
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 //import android.util.DisplayMetrics
@@ -12,16 +13,26 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavController
 import com.example.finalproject.ui.theme.FinalProjectTheme
+import kotlinx.coroutines.launch
+import readSchedule
+import writeSchedule
 
 @Composable
 fun EditScreen(
     schedules: List<Schedule>,
     navController: NavController
 ) {
+    var context = LocalContext.current
+    var scope = rememberCoroutineScope()
+
     Column(Modifier.fillMaxHeight()) {
 
         Row(Modifier.fillMaxWidth()) {
@@ -53,16 +64,26 @@ fun EditScreen(
             }
         }
 
-        Button(onClick = {/*placeholder*/},modifier = Modifier
+
+
+        Button(onClick = {
+                            scope.launch{
+                                context.writeSchedule("ScheduleC", Schedule("x", "y"))
+                            }
+//                         SaveNameUser(Schedule("x", "y"))
+
+        },modifier = Modifier
             .fillMaxWidth()
             .padding(all = 10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
-            Text(
-                text = "Create New Schedule",
-                Modifier
-                    .padding(all = 20.dp)
-                    .padding(top = 20.dp)
-            )
-        }
+
+                Text(
+                    text = "Create Schedule",
+                    Modifier
+                        .padding(all = 20.dp)
+                        .padding(top = 20.dp)
+                )
+            }
+
 
         var pageNum by remember{
             mutableStateOf(1)

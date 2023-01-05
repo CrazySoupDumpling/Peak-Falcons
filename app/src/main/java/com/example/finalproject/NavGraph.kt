@@ -15,29 +15,29 @@ fun SetupNavGraph(
             route = Screens.Schedule.route
         ){
             val list = ArrayList<Schedule>()
-            list.add(Schedule("Hi"))
-            list.add(Schedule("Middle"))
-            list.add(Schedule("Bye"))
-            list.add(Schedule("After End"))
-            list.add(Schedule("Later"))
+            list.add(Schedule("Hi", "ExampleItems"))
+            list.add(Schedule("Middle", "ExampleItems"))
+            list.add(Schedule("Bye", "ExampleItems"))
+            list.add(Schedule("After End", "ExampleItems"))
+            list.add(Schedule("Later", "ExampleItems"))
             ScheduleScreen(list, navController = navController)
         }
         composable(
             route = Screens.Edit.route
         ){
             val list = ArrayList<Schedule>()
-            list.add(Schedule("Hi"))
-            list.add(Schedule("Middle"))
-            list.add(Schedule("Bye"))
-            list.add(Schedule("After End"))
-            list.add(Schedule("Later"))
+            list.add(Schedule("Hi", "ExampleItems"))
+            list.add(Schedule("Middle", "ExampleItems"))
+            list.add(Schedule("Bye", "ExampleItems"))
+            list.add(Schedule("After End", "ExampleItems"))
+            list.add(Schedule("Later", "ExampleItems"))
             EditScreen(list, navController = navController)
         }
         composable(
             route = Screens.Checklist.route
         ){
 
-            ChecklistScreen(schedule = Schedule("Test"), navController = navController)
+            ChecklistScreen(schedule = Schedule("Test", "ExampleItems"), navController = navController)
 
         }
     }

@@ -5,19 +5,23 @@ import android.util.Log
 //import android.util.DisplayMetrics
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.finalproject.ui.theme.FinalProjectTheme
 
-class MainActivity : ComponentActivity() {
-
+class MainActivity : AppCompatActivity() {
     lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,17 +33,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Log.e("myTag", "This is my message");
                     navController = rememberNavController()
                     SetupNavGraph(navController = navController)
 
-//                    val list = ArrayList<Schedule>()
-//                    list.add(Schedule("Hi"))
-//                    list.add(Schedule("Middle"))
-//                    list.add(Schedule("Bye"))
-//                    list.add(Schedule("After End"))
-//                    list.add(Schedule("Later"))
-//                    ScheduleScreen(list, navController)
                 }
             }
         }
