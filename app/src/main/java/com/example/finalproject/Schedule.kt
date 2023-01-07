@@ -1,12 +1,23 @@
 package com.example.finalproject
 
-class Schedule constructor(name: String, items: String){
-    val name = name
-    val items = "get Dressed, leave"
+import androidx.annotation.NonNull
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-    @Override
-    public final override fun toString(): String{
+@Entity(tableName = "schedules")
+class Schedule constructor(name: String, items: ScheduleItems){
 
-        return name + "," + items
-    }
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @ColumnInfo(name = "id")
+    var id: Long = 0
+
+    @ColumnInfo(name = "scheduleName")
+    var name: String = name
+
+    @ColumnInfo(name = "items")
+    var items: ScheduleItems = items
 }
+
+

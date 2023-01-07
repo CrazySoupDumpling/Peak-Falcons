@@ -68,7 +68,7 @@ fun EditScreen(
 
         Button(onClick = {
                             scope.launch{
-                                context.writeSchedule("ScheduleC", Schedule("x", "y"))
+                                context.writeSchedule("ScheduleC", Schedule("x", ScheduleItems(listOf("y"))))
                             }
 //                         SaveNameUser(Schedule("x", "y"))
 
