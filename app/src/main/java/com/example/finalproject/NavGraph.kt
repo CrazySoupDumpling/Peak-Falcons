@@ -6,11 +6,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 @Composable
 fun SetupNavGraph(
     navController: NavHostController,
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
 ) {
     NavHost(navController = navController,
             startDestination = Screens.Schedule.route){
@@ -27,10 +29,29 @@ fun SetupNavGraph(
             EditScreen(allSchedules, navController = navController)
         }
         composable(
-            route = Screens.Checklist.route
+            route = "${Screens.Checklist.route}/{scheduleId}",
+            arguments = listOf(navArgument("scheduleId") { defaultValue = "user1234" })
         ){
+//            val index = backStackEntry.arguments?.getInt("index") ?: 0
+//            val planet = Planet.data[index]
+                backStackEntry ->
+            val x: String? = backStackEntry.arguments?.getString("scheduleId")
 
-            ChecklistScreen(schedule = Schedule("Test", ScheduleItems(listOf("ExampleItems"))), navController = navController)
+
+
+            if (x != null) {
+                ChecklistScreen(
+                    scheduleID = x.toInt(),
+                    navController = navController,
+                    viewModel =  viewModel
+                )
+            }else{
+                ChecklistScreen(
+                    scheduleID = 7,
+                    navController = navController,
+                    viewModel = viewModel
+                )
+            }
 
         }
     }

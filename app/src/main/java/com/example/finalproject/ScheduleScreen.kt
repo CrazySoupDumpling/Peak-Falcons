@@ -28,6 +28,9 @@ fun ScheduleScreen(
     viewModel: MainViewModel
 ) {
 
+
+    /* DATABASE TESTING
+
     var scheduleName by remember { mutableStateOf("") }
     var scheduleQuantity by remember { mutableStateOf("") }
     var searching by remember { mutableStateOf(false) }
@@ -108,121 +111,82 @@ fun ScheduleScreen(
         }
     }
 
-//    Column(Modifier.fillMaxHeight()) {
-//
-//        Row(Modifier.fillMaxWidth()) {
-//            Text(text = "Your Schedules", modifier = Modifier
-//                .padding(all = 20.dp)
-//                .padding(top = 15.dp))
-//            Spacer(modifier = Modifier.width(140.dp))
-//            Button(onClick = {navController.navigate(route = Screens.Edit.route)}) {
-//                Text(text = "edit ", modifier = Modifier.padding(all = 20.dp))
-//            }
-//        }
-//        val EntriesPerPage = 3
-//        var schedNumStart by remember{
-//            mutableStateOf(0)
-//        }
-//        var schedNumEnd by remember{
-//            mutableStateOf(EntriesPerPage-1)
-//        }
-//        for(i in schedNumStart..minOf(schedNumEnd, schedules.size-1)){
-//            Button(onClick = {navController.navigate(route= Screens.Checklist.route) },modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(all = 10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
-//                Text(
-//                    text = schedules[i].name,
-//                    Modifier
-//                        .padding(all = 20.dp)
-//                        .padding(top = 20.dp)
-//                )
-//            }
-//        }
-////        schedules.forEach{ scheduleName ->
-////            Button(onClick = {/*placeholder*/ },modifier = Modifier.fillMaxWidth().padding(all=10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
-////                Text(text = scheduleName.firstProperty, Modifier.padding(all = 20.dp).padding(top = 20.dp))
-////            }
-////        }
-//        var pageNum by remember{
-//            mutableStateOf(1)
-//        }
-//        var pages by remember{
-//            mutableStateOf((schedules.size / EntriesPerPage))
-//        }
-//        val totalPageNum by remember{
-//
-//
-//            if (schedules.size % EntriesPerPage != 0 && schedules.size > EntriesPerPage) {
-//                pages = (schedules.size / EntriesPerPage) + 1
-//            }
-//            mutableStateOf(pages)
-//        }
-//
-//        Row(Modifier.fillMaxWidth()) {
-//            Text(text = "Page $pageNum out of $totalPageNum", modifier = Modifier
-//                .padding(all = 20.dp)
-//                .padding(top = 15.dp))
-//
-//        }
-//        Row(Modifier.fillMaxWidth()) {
-//            Button(onClick = {if(pageNum>1) {
-//                pageNum--
-//                schedNumEnd -= EntriesPerPage
-//                if(schedNumStart>0)schedNumStart -= EntriesPerPage
-//            }}) {
-//                Text(text = "Previous", modifier = Modifier.padding(all = 20.dp))
-//            }
-//            Button(onClick = {
-//                Log.e("myTag", "This is my message")
-//                if(pageNum<totalPageNum) {
-//                pageNum++
-//                schedNumStart += EntriesPerPage
-//                if(schedNumEnd<schedules.size)schedNumEnd += EntriesPerPage
-//            }}) {
-//                Text(text = "Next", modifier = Modifier.padding(all = 20.dp))
-//            }
-//        }
-//    }
-}
+     */
 
-@Composable
-fun TitleRow(head1: String, head2: String, head3: String) {
-    Row(
-        modifier = Modifier
-            .background(MaterialTheme.colors.primary)
-            .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-        Text(
-            head1, color = Color.White,
-            modifier = Modifier
-                .weight(0.1f)
-        )
-        Text(
-            head2, color = Color.White,
-            modifier = Modifier
-                .weight(0.2f)
-        )
-        Text(
-            head3, color = Color.White,
-            modifier = Modifier.weight(0.2f)
-        )
-    }
-}
+    Column(Modifier.fillMaxHeight()) {
 
-@Composable
-fun ScheduleRow(id: Int, name: String, quantity: Int) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-        Text(
-            id.toString(), modifier = Modifier
-                .weight(0.1f)
-        )
-        Text(name, modifier = Modifier.weight(0.2f))
-        Text(quantity.toString(), modifier = Modifier.weight(0.2f))
+        Row(Modifier.fillMaxWidth()) {
+            Text(text = "Your Schedules", modifier = Modifier
+                .padding(all = 20.dp)
+                .padding(top = 15.dp))
+            Spacer(modifier = Modifier.width(140.dp))
+            Button(onClick = {navController.navigate(route = Screens.Edit.route)}) {
+                Text(text = "edit ", modifier = Modifier.padding(all = 20.dp))
+            }
+        }
+        val EntriesPerPage = 3
+        var schedNumStart by remember{
+            mutableStateOf(0)
+        }
+        var schedNumEnd by remember{
+            mutableStateOf(EntriesPerPage-1)
+        }
+        for(i in schedNumStart..minOf(schedNumEnd, schedules.size-1)){
+            Button(onClick = {navController.navigate(route= "${Screens.Checklist.route}/${schedules[i].id}") },modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
+                Text(
+                    text = schedules[i].name,
+                    Modifier
+                        .padding(all = 20.dp)
+                        .padding(top = 20.dp)
+                )
+            }
+        }
+//        schedules.forEach{ scheduleName ->
+//            Button(onClick = {/*placeholder*/ },modifier = Modifier.fillMaxWidth().padding(all=10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
+//                Text(text = scheduleName.firstProperty, Modifier.padding(all = 20.dp).padding(top = 20.dp))
+//            }
+//        }
+        var pageNum by remember{
+            mutableStateOf(1)
+        }
+        var pages by remember{
+            mutableStateOf((schedules.size / EntriesPerPage))
+        }
+        val totalPageNum by remember{
+
+
+            if (schedules.size % EntriesPerPage != 0 && schedules.size > EntriesPerPage) {
+                pages = (schedules.size / EntriesPerPage) + 1
+            }
+            mutableStateOf(pages)
+        }
+
+        Row(Modifier.fillMaxWidth()) {
+            Text(text = "Page $pageNum out of $totalPageNum", modifier = Modifier
+                .padding(all = 20.dp)
+                .padding(top = 15.dp))
+
+        }
+        Row(Modifier.fillMaxWidth()) {
+            Button(onClick = {if(pageNum>1) {
+                pageNum--
+                schedNumEnd -= EntriesPerPage
+                if(schedNumStart>0)schedNumStart -= EntriesPerPage
+            }}) {
+                Text(text = "Previous", modifier = Modifier.padding(all = 20.dp))
+            }
+            Button(onClick = {
+                Log.e("myTag", "This is my message")
+                if(pageNum<totalPageNum) {
+                pageNum++
+                schedNumStart += EntriesPerPage
+                if(schedNumEnd<schedules.size)schedNumEnd += EntriesPerPage
+            }}) {
+                Text(text = "Next", modifier = Modifier.padding(all = 20.dp))
+            }
+        }
     }
 }
 

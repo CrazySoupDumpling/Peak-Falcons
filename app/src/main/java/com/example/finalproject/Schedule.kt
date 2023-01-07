@@ -14,9 +14,11 @@ class Schedule constructor(name: String, items: ScheduleItems){
     var id: Long = 0
 
     @ColumnInfo(name = "scheduleName")
+    @NonNull
     var name: String = name
 
     @ColumnInfo(name = "items")
+    @NonNull
     var items: ScheduleItems = items
 }
 

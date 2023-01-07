@@ -33,4 +33,15 @@ class ScheduleRepository(private val scheduleDao: ScheduleDao) {
         coroutineScope.async(Dispatchers.IO) {
             return@async scheduleDao.findSchedule(name)
         }
+
+    fun findSchedule(id: Int) {
+        coroutineScope.launch(Dispatchers.Main) {
+            searchResults.value = asyncFind(id).await()
+        }
+    }
+
+    private fun asyncFind(id: Int): Deferred<List<Schedule>?> =
+        coroutineScope.async(Dispatchers.IO) {
+            return@async scheduleDao.findSchedule(id)
+        }
 }
