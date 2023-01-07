@@ -117,10 +117,10 @@ fun ScheduleScreen(
 
         Row(Modifier.fillMaxWidth()) {
             Text(text = "Your Schedules", modifier = Modifier
-                .padding(all = 20.dp)
-                .padding(top = 15.dp))
-            Spacer(modifier = Modifier.width(140.dp))
-            Button(onClick = {navController.navigate(route = Screens.Edit.route)}) {
+                .padding(vertical = 20.dp)
+                .padding(horizontal = 15.dp))
+            Spacer(modifier = Modifier.weight(1f))
+            Button(onClick = {navController.navigate(route = Screens.Edit.route)}, modifier = Modifier.width(150.dp)) {
                 Text(text = "edit ", modifier = Modifier.padding(all = 20.dp))
             }
         }
@@ -143,11 +143,7 @@ fun ScheduleScreen(
                 )
             }
         }
-//        schedules.forEach{ scheduleName ->
-//            Button(onClick = {/*placeholder*/ },modifier = Modifier.fillMaxWidth().padding(all=10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
-//                Text(text = scheduleName.firstProperty, Modifier.padding(all = 20.dp).padding(top = 20.dp))
-//            }
-//        }
+
         var pageNum by remember{
             mutableStateOf(1)
         }

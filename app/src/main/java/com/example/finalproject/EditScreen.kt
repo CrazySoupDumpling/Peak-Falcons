@@ -22,8 +22,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavController
 import com.example.finalproject.ui.theme.FinalProjectTheme
 import kotlinx.coroutines.launch
-import readSchedule
-import writeSchedule
 
 @Composable
 fun EditScreen(
@@ -67,9 +65,7 @@ fun EditScreen(
 
 
         Button(onClick = {
-                            scope.launch{
-                                context.writeSchedule("ScheduleC", Schedule("x", ScheduleItems(listOf("y"))))
-                            }
+
 //                         SaveNameUser(Schedule("x", "y"))
 
         },modifier = Modifier
