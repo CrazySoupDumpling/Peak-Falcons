@@ -39,9 +39,9 @@ fun ChecklistScreen(
                     .padding(all = 20.dp)
                     .padding(top = 15.dp)
             )
-            Spacer(modifier = Modifier.width(140.dp))
-            Button(onClick = { navController.navigate(route = Screens.Schedule.route) }) {
-                Text(text = "Exit", modifier = Modifier.padding(all = 20.dp))
+            Spacer(modifier = Modifier.weight(1f))
+            Button(onClick = {navController.navigate(route = Screens.Schedule.route)}, modifier = Modifier.width(150.dp)) {
+                Text(text = "exit", modifier = Modifier.padding(all = 20.dp))
             }
         }
 

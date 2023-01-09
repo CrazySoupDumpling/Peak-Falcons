@@ -3,7 +3,9 @@ package com.example.finalproject
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -113,7 +115,10 @@ fun ScheduleScreen(
 
      */
 
-    Column(Modifier.fillMaxHeight()) {
+    Column(
+        Modifier
+            .fillMaxHeight()
+            .verticalScroll(rememberScrollState())) {
 
         Row(Modifier.fillMaxWidth()) {
             Text(text = "Your Schedules", modifier = Modifier
@@ -124,14 +129,7 @@ fun ScheduleScreen(
                 Text(text = "edit ", modifier = Modifier.padding(all = 20.dp))
             }
         }
-        val EntriesPerPage = 3
-        var schedNumStart by remember{
-            mutableStateOf(0)
-        }
-        var schedNumEnd by remember{
-            mutableStateOf(EntriesPerPage-1)
-        }
-        for(i in schedNumStart..minOf(schedNumEnd, schedules.size-1)){
+        for(i in 0..schedules.size-1){
             Button(onClick = {navController.navigate(route= "${Screens.Checklist.route}/${schedules[i].id}") },modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
@@ -141,46 +139,6 @@ fun ScheduleScreen(
                         .padding(all = 20.dp)
                         .padding(top = 20.dp)
                 )
-            }
-        }
-
-        var pageNum by remember{
-            mutableStateOf(1)
-        }
-        var pages by remember{
-            mutableStateOf((schedules.size / EntriesPerPage))
-        }
-        val totalPageNum by remember{
-
-
-            if (schedules.size % EntriesPerPage != 0 && schedules.size > EntriesPerPage) {
-                pages = (schedules.size / EntriesPerPage) + 1
-            }
-            mutableStateOf(pages)
-        }
-
-        Row(Modifier.fillMaxWidth()) {
-            Text(text = "Page $pageNum out of $totalPageNum", modifier = Modifier
-                .padding(all = 20.dp)
-                .padding(top = 15.dp))
-
-        }
-        Row(Modifier.fillMaxWidth()) {
-            Button(onClick = {if(pageNum>1) {
-                pageNum--
-                schedNumEnd -= EntriesPerPage
-                if(schedNumStart>0)schedNumStart -= EntriesPerPage
-            }}) {
-                Text(text = "Previous", modifier = Modifier.padding(all = 20.dp))
-            }
-            Button(onClick = {
-                Log.e("myTag", "This is my message")
-                if(pageNum<totalPageNum) {
-                pageNum++
-                schedNumStart += EntriesPerPage
-                if(schedNumEnd<schedules.size)schedNumEnd += EntriesPerPage
-            }}) {
-                Text(text = "Next", modifier = Modifier.padding(all = 20.dp))
             }
         }
     }

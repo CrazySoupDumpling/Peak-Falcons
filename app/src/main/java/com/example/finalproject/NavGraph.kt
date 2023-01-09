@@ -29,16 +29,37 @@ fun SetupNavGraph(
             EditScreen(allSchedules, navController = navController)
         }
         composable(
-            route = "${Screens.Checklist.route}/{scheduleId}",
-            arguments = listOf(navArgument("scheduleId") { defaultValue = "user1234" })
+            route = Screens.Create.route
         ){
-//            val index = backStackEntry.arguments?.getInt("index") ?: 0
-//            val planet = Planet.data[index]
+            CreateScheduleScreen(navController = navController, viewModel = viewModel)
+        }
+        composable(
+            route = "${Screens.Checklist.route}/{scheduleId}",
+            arguments = listOf(navArgument("scheduleId") { defaultValue = "7" })
+        ){
                 backStackEntry ->
             val x: String? = backStackEntry.arguments?.getString("scheduleId")
+            if (x != null) {
+                ChecklistScreen(
+                    scheduleID = x.toInt(),
+                    navController = navController,
+                    viewModel =  viewModel
+                )
+            }else{
+                ChecklistScreen(
+                    scheduleID = 7,
+                    navController = navController,
+                    viewModel = viewModel
+                )
+            }
 
-
-
+        }
+        composable(
+            route = "${Screens.EditSchedule.route}/{scheduleId}",
+            arguments = listOf(navArgument("scheduleId") { defaultValue = "7" })
+        ){
+                backStackEntry ->
+            val x: String? = backStackEntry.arguments?.getString("scheduleId")
             if (x != null) {
                 ChecklistScreen(
                     scheduleID = x.toInt(),
