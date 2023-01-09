@@ -45,23 +45,21 @@ fun CreateScheduleScreen(
 
         Log.e("e", items.size.toString())
         Log.e("e", items.toString())
-        for (s in 0..items.size-1){
-            Text("Item #${s+1}")
-            TextField(
-                value = items[s],
-                onValueChange = { items[s] = it }
-            )
+        for (counter in 0..items.size-1) {
+            Text("Item #${counter + 1}")
+            Row(){
+                TextField(
+                    value = items[counter],
+                    onValueChange = { items[counter] = it }
+                )
+                Button(onClick ={items.removeAt(counter)}){
+                    Text(text = "Delete")
+                }
+            }
         }
         Row() {
             Button(onClick = { items.add(TextFieldValue(text = "")) }) {
                 Text(text = "Add Item")
-            }
-            Button(onClick = {
-                if (items.size>0) {
-                    items.removeAt(items.size - 1)
-                }
-            }) {
-                Text(text = "Remove Item")
             }
             Button(onClick = {
                 if (ScheduleName.value.text.length > 0 &&items.size > 0 && items[0].text.length > 0) {
