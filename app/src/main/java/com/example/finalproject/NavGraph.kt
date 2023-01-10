@@ -26,7 +26,7 @@ fun SetupNavGraph(
             route = Screens.Edit.route
         ){
             val allSchedules by viewModel.allSchedules.observeAsState(listOf())
-            EditScreen(allSchedules, navController = navController)
+            EditScreen(allSchedules, navController = navController, viewModel = viewModel)
         }
         composable(
             route = Screens.Create.route

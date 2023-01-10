@@ -17,8 +17,8 @@ interface ScheduleDao {
     @Query("SELECT * FROM schedules WHERE id = :id")
     fun findSchedule(id: Int): List<Schedule>
 
-    @Query("DELETE FROM schedules WHERE scheduleName = :name")
-    fun deleteSchedule(name: String)
+    @Query("DELETE FROM schedules WHERE id = :id")
+    fun deleteSchedule(id: Int)
 
     @Query("SELECT * FROM schedules")
     fun getAllSchedules(): LiveData<List<Schedule>>

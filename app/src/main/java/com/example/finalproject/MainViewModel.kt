@@ -31,7 +31,7 @@ class MainViewModel(application: Application) : ViewModel() {
         repository.findSchedule(id)
     }
 
-    fun deleteSchedule(name: String) {
-        repository.deleteSchedule(name)
+    fun deleteSchedule(id: Int) {
+        repository.deleteSchedule(id)
     }
 }

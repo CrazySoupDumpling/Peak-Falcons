@@ -28,54 +28,76 @@ import kotlinx.coroutines.launch
 @Composable
 fun EditScreen(
     schedules: List<Schedule>,
-    navController: NavController
+    navController: NavController,
+    viewModel :MainViewModel
 ) {
-    var context = LocalContext.current
-    var scope = rememberCoroutineScope()
-
     Column(
         Modifier
             .fillMaxHeight()
-            .verticalScroll(rememberScrollState())) {
+            .verticalScroll(rememberScrollState())
+    ) {
 
         Row(Modifier.fillMaxWidth()) {
-            Text(text = "Edit Your Schedules", modifier = Modifier
-                .padding(all = 20.dp)
-                .padding(top = 15.dp))
+            Text(
+                text = "Edit Your Schedules", modifier = Modifier
+                    .padding(all = 20.dp)
+                    .padding(top = 15.dp)
+            )
             Spacer(modifier = Modifier.weight(1f))
-            Button(onClick = {navController.navigate(route = Screens.Schedule.route)}, modifier = Modifier.width(150.dp)) {
+            Button(
+                onClick = { navController.navigate(route = Screens.Schedule.route) },
+                modifier = Modifier.width(150.dp)
+            ) {
                 Text(text = "Done", modifier = Modifier.padding(all = 20.dp))
             }
         }
-        for(schedule in schedules){
-            Button(onClick = {navController.navigate(Screens.EditSchedule.route) },modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
-                Text(
-                    text = schedule.name,
-                    Modifier
-                        .padding(all = 20.dp)
-                        .padding(top = 20.dp)
-                )
+        Spacer(modifier = Modifier.height(40.dp))
+        for (schedule in schedules) {
+            Row() {
+                Button(
+                    onClick = { navController.navigate(Screens.EditSchedule.route) },
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(all = 10.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
+                ) {
+                    Text(
+                        text = schedule.name,
+                        Modifier
+                            .padding(all = 20.dp)
+                            .padding(top = 20.dp)
+                    )
+                }
+                Button(
+                    onClick = { viewModel.deleteSchedule(schedule.id.toInt()) },
+                    modifier = Modifier.width(100.dp).fillMaxHeight(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
+                ) {
+                    Text(text = "Delete Schedule")
+                }
             }
         }
 
 
 
-        Button(onClick = {
+        Button(
+            onClick = {
 
-                         navController.navigate(route = Screens.Create.route)
+                navController.navigate(route = Screens.Create.route)
 
-        },modifier = Modifier
-            .fillMaxWidth()
-            .padding(all = 10.dp) ,colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)) {
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 10.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
+        ) {
 
-                Text(
-                    text = "Create Schedule",
-                    Modifier
-                        .padding(all = 20.dp)
-                        .padding(top = 20.dp)
-                )
-            }
+            Text(
+                text = "Create Schedule",
+                Modifier
+                    .padding(all = 20.dp)
+                    .padding(top = 20.dp)
+            )
+        }
     }
 }

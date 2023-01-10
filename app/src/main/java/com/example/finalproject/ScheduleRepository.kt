@@ -17,9 +17,9 @@ class ScheduleRepository(private val scheduleDao: ScheduleDao) {
         }
     }
 
-    fun deleteSchedule(name: String) {
+    fun deleteSchedule(id: Int) {
         coroutineScope.launch(Dispatchers.IO) {
-            scheduleDao.deleteSchedule(name)
+            scheduleDao.deleteSchedule(id)
         }
     }
 
