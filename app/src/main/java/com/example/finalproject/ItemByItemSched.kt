@@ -2,6 +2,7 @@ package com.example.finalproject
 import androidx.navigation.compose.rememberNavController
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -12,9 +13,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlin.collections.ArrayList
  
@@ -27,8 +30,9 @@ fun ItemByItemSched(
 
     val schedule = scheduleTesting
     var IBIList = remember { mutableStateListOf<Boolean>()}
-
-    Column(Modifier.fillMaxHeight().verticalScroll(rememberScrollState())) {
+    var itemNum by remember { mutableStateOf(0) }
+Column(Modifier.fillMaxHeight(),
+    verticalArrangement = Arrangement.SpaceBetween){
 
         Row(Modifier.fillMaxWidth()) {
             Text(
@@ -43,7 +47,6 @@ fun ItemByItemSched(
                 Text(text = "exit", modifier = Modifier.padding(all = 20.dp))
             }
         }
-
         var toSize: Int
         if (schedule != null) {
             toSize = schedule?.items?.scheduleItems?.size-1
@@ -51,42 +54,43 @@ fun ItemByItemSched(
             toSize = 0
         }
 
-        for (i in 0..toSize) {
-            if (i >= IBIList.size){
-                IBIList.add(false)
-            }
-            Button(
-                onClick = { IBIList[i] = !IBIList[i] },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
-                    .padding(vertical = 20.dp).height(100.dp)
-            ) {
-                if (IBIList[i]) {
 
-                    Image(
-                        painterResource(R.drawable.completedcheck),
-                        contentDescription = "Item Completed",
-                        modifier = Modifier.padding(horizontal = 5.dp)
-                            .align(Alignment.CenterVertically)
-                    )
-                } else {
-                    Image(
-                        painterResource(R.drawable.uncompletedcheck),
-                        contentDescription = "Item Not Completed",
-                        modifier = Modifier.padding(horizontal = 5.dp)
-                            .align(Alignment.CenterVertically)
-                    )
-                }
-//                Spacer(modifier = Modifier.weight(1f))
-                if (schedule != null) {
-                    Text(
-                        text = schedule.items.scheduleItems[i],
-                        modifier = Modifier.padding(all = 20.dp).weight(1f)
-                    )
-                }
-            }
 
+    Row(){
+        Box(
+            modifier = Modifier.border(20.dp, Color.Black).fillMaxWidth()
+        ) {
+            Text(
+                text = schedule.items.scheduleItems[itemNum],
+                modifier = Modifier.padding(all = 30.dp),
+                fontSize = 50.sp
+            )
         }
     }
+
+
+    Row(
+        modifier = Modifier
+            .weight(1f, false).fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Button(
+            onClick = {if(itemNum>0)itemNum--},
+            modifier = Modifier.width(200.dp)
+        ) {
+            Text(text = "Previous", modifier = Modifier.padding(all = 40.dp), fontSize = 20.sp)
+        }
+        //Spacer(modifier = Modifier.weight(.25f))
+        Button(
+            onClick = {if(itemNum<toSize)itemNum++},
+            modifier = Modifier.width(200.dp)
+        ) {
+            Text(text = "Next", modifier = Modifier.padding(all = 40.dp), fontSize = 20.sp)
+        }
+    }
+    //Spacer(modifier = Modifier.weight(.1f))
+}
+
 }
 
 
@@ -107,7 +111,7 @@ fun DefaultPreview() {
     list.add("Later")
     list.add("Later")
     list.add("Later")
-    list.add("Later")
+    list.add("Last")
 
         var navController = rememberNavController()
         //SetupNavGraph(navController = navController, viewModel = null)
