@@ -1,9 +1,11 @@
 package com.example.finalproject
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
+
 data class ScheduleItems(
-     var scheduleItems_: List<String>
+     var scheduleItems_: SnapshotStateList<String>
 ){
-    val scheduleItems: List<String>
-        get() = scheduleItems_
+    val scheduleItems: SnapshotStateList<String> = scheduleItems_
+
 
 }

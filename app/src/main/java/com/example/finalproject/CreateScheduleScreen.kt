@@ -6,10 +6,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -52,7 +55,7 @@ fun CreateScheduleScreen(
                     value = items[counter],
                     onValueChange = { items[counter] = it }
                 )
-                Button(onClick ={items.removeAt(counter)}){
+                Button(onClick ={items.removeAt(counter)},colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)){
                     Text(text = "Delete")
                 }
             }
@@ -63,14 +66,14 @@ fun CreateScheduleScreen(
             }
             Button(onClick = {
                 if (ScheduleName.value.text.length > 0 &&items.size > 0 && items[0].text.length > 0) {
-                    var itemListOfStrings: ArrayList<String> = ArrayList<String>()
+                    var itemListOfStrings: SnapshotStateList<String> = SnapshotStateList<String>()
                     for (i in 0..items.size - 1) {
                         itemListOfStrings.add(items[i].text)
                     }
                     viewModel.insertSchedule(
                         Schedule(
                             name = ScheduleName.value.text,
-                            ScheduleItems(itemListOfStrings)
+                            items = ScheduleItems(itemListOfStrings)
                         )
                     )
                     navController.navigate(Screens.Schedule.route)

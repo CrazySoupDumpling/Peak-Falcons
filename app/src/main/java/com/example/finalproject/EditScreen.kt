@@ -52,7 +52,7 @@ fun EditScreen(
         for (schedule in schedules) {
             Row() {
                 Button(
-                    onClick = { navController.navigate(Screens.EditSchedule.route) },
+                    onClick = { navController.navigate("${Screens.EditSchedule.route}/${schedule.id}") },
                     modifier = Modifier
                         .weight(1f)
                         .padding(all = 10.dp),
@@ -67,7 +67,7 @@ fun EditScreen(
                 }
                 Button(
                     onClick = { viewModel.deleteSchedule(schedule.id.toInt()) },
-                    modifier = Modifier.width(100.dp).fillMaxHeight(),
+                    modifier = Modifier.width(100.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
                 ) {
                     Text(text = "Delete Schedule")

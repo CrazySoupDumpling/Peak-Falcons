@@ -11,6 +11,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,12 +24,14 @@ import kotlin.collections.ArrayList
  
 @Composable
 fun ItemByItemSched(
-    scheduleTesting: Schedule,
-    navController: NavController
+    scheduleID: Int,
+    navController: NavController,
+    viewModel: MainViewModel
 
 ) {
 
-    val schedule = scheduleTesting
+    viewModel.findSchedule(scheduleID)
+    val schedule: Schedule? = viewModel.searchResults.observeAsState().value?.get(0)
     var IBIList = remember { mutableStateListOf<Boolean>()}
     var itemNum by remember { mutableStateOf(0) }
 Column(Modifier.fillMaxHeight(),
@@ -49,7 +52,7 @@ Column(Modifier.fillMaxHeight(),
         }
         var toSize: Int
         if (schedule != null) {
-            toSize = schedule?.items?.scheduleItems?.size-1
+            toSize = schedule.items.scheduleItems.size-1
         } else {
             toSize = 0
         }
@@ -60,11 +63,13 @@ Column(Modifier.fillMaxHeight(),
         Box(
             modifier = Modifier.border(20.dp, Color.Black).fillMaxWidth()
         ) {
-            Text(
-                text = schedule.items.scheduleItems[itemNum],
-                modifier = Modifier.padding(all = 30.dp),
-                fontSize = 50.sp
-            )
+            if (schedule != null) {
+                Text(
+                    text = schedule.items.scheduleItems[itemNum],
+                    modifier = Modifier.padding(all = 30.dp),
+                    fontSize = 50.sp
+                )
+            }
         }
     }
 
@@ -97,7 +102,7 @@ Column(Modifier.fillMaxHeight(),
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-        val list = ArrayList<String>()
+        val list = SnapshotStateList<String>()
         val items = ScheduleItems(list)
         val schedTest = Schedule("Test1",items)
 
@@ -115,7 +120,7 @@ fun DefaultPreview() {
 
         var navController = rememberNavController()
         //SetupNavGraph(navController = navController, viewModel = null)
-        ItemByItemSched(schedTest, navController = navController)
+//        ItemByItemSched(schedTest, navController = navController)
 
 }
 

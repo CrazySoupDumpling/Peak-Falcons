@@ -16,12 +16,18 @@ class ScheduleRepository(private val scheduleDao: ScheduleDao) {
             scheduleDao.insertSchedule(newschedule)
         }
     }
+    fun updateSchedule(updatedSchedule: Schedule) {
+        coroutineScope.launch(Dispatchers.IO) {
+            scheduleDao.updateSchedule(updatedSchedule)
+        }
+    }
 
     fun deleteSchedule(id: Int) {
         coroutineScope.launch(Dispatchers.IO) {
             scheduleDao.deleteSchedule(id)
         }
     }
+
 
     fun findSchedule(name: String) {
         coroutineScope.launch(Dispatchers.Main) {

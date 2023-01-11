@@ -35,7 +35,7 @@ fun SetupNavGraph(
         }
         composable(
             route = "${Screens.Checklist.route}/{scheduleId}",
-            arguments = listOf(navArgument("scheduleId") { defaultValue = "7" })
+            arguments = listOf(navArgument("scheduleId") { defaultValue = "1" })
         ){
                 backStackEntry ->
             val x: String? = backStackEntry.arguments?.getString("scheduleId")
@@ -47,7 +47,7 @@ fun SetupNavGraph(
                 )
             }else{
                 ChecklistScreen(
-                    scheduleID = 7,
+                    scheduleID = 1,
                     navController = navController,
                     viewModel = viewModel
                 )
@@ -56,19 +56,40 @@ fun SetupNavGraph(
         }
         composable(
             route = "${Screens.EditSchedule.route}/{scheduleId}",
-            arguments = listOf(navArgument("scheduleId") { defaultValue = "7" })
+            arguments = listOf(navArgument("scheduleId") { defaultValue = "1" })
         ){
                 backStackEntry ->
             val x: String? = backStackEntry.arguments?.getString("scheduleId")
             if (x != null) {
-                ChecklistScreen(
+                EditScheduleScreen(
                     scheduleID = x.toInt(),
                     navController = navController,
                     viewModel =  viewModel
                 )
             }else{
-                ChecklistScreen(
-                    scheduleID = 7,
+                EditScheduleScreen(
+                    scheduleID = 1,
+                    navController = navController,
+                    viewModel = viewModel
+                )
+            }
+
+        }
+        composable(
+            route = "${Screens.ItembyItem.route}/{scheduleId}",
+            arguments = listOf(navArgument("scheduleId") { defaultValue = "1" })
+        ){
+                backStackEntry ->
+            val x: String? = backStackEntry.arguments?.getString("scheduleId")
+            if (x != null) {
+                ItemByItemSched(
+                    scheduleID = x.toInt(),
+                    navController = navController,
+                    viewModel =  viewModel
+                )
+            }else{
+                ItemByItemSched(
+                    scheduleID = 1,
                     navController = navController,
                     viewModel = viewModel
                 )

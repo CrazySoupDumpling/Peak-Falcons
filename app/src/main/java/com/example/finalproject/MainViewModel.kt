@@ -24,6 +24,10 @@ class MainViewModel(application: Application) : ViewModel() {
         repository.insertSchedule(schedule)
     }
 
+    fun updateSchedule(schedule: Schedule) {
+        repository.updateSchedule(schedule)
+    }
+
     fun findSchedule(name: String) {
         repository.findSchedule(name)
     }

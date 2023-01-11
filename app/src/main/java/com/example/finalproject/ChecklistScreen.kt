@@ -87,12 +87,12 @@ fun ChecklistScreen(
         }
         Column(Modifier.height(90.dp)) {
             Row() {
-                Button(onClick = {/*To view 1*/ }, enabled = false) {
+                Button(onClick = {navController.navigate("${Screens.ItembyItem.route}/${scheduleID}")  }, enabled = false) {
                     Text(text = "Checklist")
                 }
                 Spacer(modifier = Modifier.weight(0.5f))
 
-                Button(onClick = {/*To view 2*/ }) {
+                Button(onClick = {/**/}) {
                     Text(text = "This Then")
                 }
                 Spacer(modifier = Modifier.weight(0.5f))
