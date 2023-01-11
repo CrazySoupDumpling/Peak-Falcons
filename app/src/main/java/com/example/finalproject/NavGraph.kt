@@ -96,5 +96,26 @@ fun SetupNavGraph(
             }
 
         }
+        composable(
+            route = "${Screens.ThisThen.route}/{scheduleId}",
+            arguments = listOf(navArgument("scheduleId") { defaultValue = "1" })
+        ){
+                backStackEntry ->
+            val x: String? = backStackEntry.arguments?.getString("scheduleId")
+            if (x != null) {
+                twoItemSched(
+                    scheduleID = x.toInt(),
+                    navController = navController,
+                    viewModel =  viewModel
+                )
+            }else{
+                twoItemSched(
+                    scheduleID = 1,
+                    navController = navController,
+                    viewModel = viewModel
+                )
+            }
+
+        }
     }
 }

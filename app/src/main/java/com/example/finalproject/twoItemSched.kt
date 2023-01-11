@@ -25,12 +25,14 @@ import androidx.compose.ui.window.Popup
 
 @Composable
 fun twoItemSched(
-    scheduleTesting: Schedule,
-    navController: NavController
+    scheduleID: Int,
+    navController: NavController,
+    viewModel: MainViewModel
 
 ) {
 
-    val schedule = scheduleTesting
+    viewModel.findSchedule(scheduleID)
+    val schedule: Schedule? = viewModel.searchResults.observeAsState().value?.get(0)
     var tIList = remember { mutableStateListOf<Boolean>()}
     var itemNum by remember { mutableStateOf(0) }
     Column(Modifier.fillMaxHeight(),
@@ -63,11 +65,13 @@ fun twoItemSched(
             Box(
                 modifier = Modifier.border(20.dp, Color.Black).fillMaxWidth()
             ) {
-                Text(
-                    text = schedule.items.scheduleItems[itemNum],
-                    modifier = Modifier.padding(all = 30.dp),
-                    fontSize = 50.sp
-                )
+                if (schedule != null) {
+                    Text(
+                        text = schedule.items.scheduleItems[itemNum],
+                        modifier = Modifier.padding(all = 30.dp),
+                        fontSize = 50.sp
+                    )
+                }
             }
             if(itemNum+1<toSize) {
                 Image(
@@ -79,11 +83,13 @@ fun twoItemSched(
                 Box(
                     modifier = Modifier.border(20.dp, Color.Black).fillMaxWidth()
                 ) {
-                    Text(
-                        text = schedule.items.scheduleItems[itemNum+1],
-                        modifier = Modifier.padding(all = 30.dp),
-                        fontSize = 50.sp
-                    )
+                    if (schedule != null) {
+                        Text(
+                            text = schedule.items.scheduleItems[itemNum + 1],
+                            modifier = Modifier.padding(all = 30.dp),
+                            fontSize = 50.sp
+                        )
+                    }
                 }
             }
 
@@ -143,6 +149,6 @@ fun twoPreview() {
 
     var navController = rememberNavController()
     //SetupNavGraph(navController = navController, viewModel = null)
-    twoItemSched(schedTest, navController = navController)
+//    twoItemSched(schedTest, navController = navController)
 
 }
