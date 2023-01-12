@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -32,6 +33,7 @@ fun EditScreen(
         Modifier
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
+            .background(colorResource(R.color.Background))
     ) {
 
         Row(Modifier.fillMaxWidth()) {
@@ -43,7 +45,8 @@ fun EditScreen(
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = { navController.navigate(route = Screens.Schedule.route) },
-                modifier = Modifier.width(150.dp)
+                modifier = Modifier.width(150.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.TitleGreen))
             ) {
                 Text(text = "Done", modifier = Modifier.padding(all = 20.dp))
             }
@@ -56,7 +59,7 @@ fun EditScreen(
                     modifier = Modifier
                         .weight(1f)
                         .padding(all = 10.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
                 ) {
                     Text(
                         text = schedule.name,
@@ -67,7 +70,7 @@ fun EditScreen(
                 }
                 Button(
                     onClick = { viewModel.deleteSchedule(schedule.id.toInt()) },
-                    modifier = Modifier.width(100.dp),
+                    modifier = Modifier.width(100.dp).padding(vertical = 30.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
                 ) {
                     Text(text = "Delete Schedule")
@@ -86,7 +89,7 @@ fun EditScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 10.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
         ) {
 
             Text(
