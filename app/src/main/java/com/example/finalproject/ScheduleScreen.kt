@@ -39,7 +39,8 @@ fun ScheduleScreen(
         Row(Modifier.fillMaxWidth()) {
             Text(text = "Your Schedules", modifier = Modifier
                 .padding(vertical = 20.dp)
-                .padding(horizontal = 15.dp))
+                .padding(horizontal = 15.dp)
+                , fontWeight = FontWeight.Bold, fontSize = 30.sp)
             Spacer(modifier = Modifier.weight(1f))
             Button(onClick = {navController.navigate(route = Screens.Edit.route)}, modifier = Modifier.width(150.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.TitleGreen))) {
                 Text(text = "edit ", modifier = Modifier.padding(all = 20.dp))

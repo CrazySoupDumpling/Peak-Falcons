@@ -17,8 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.finalproject.ui.theme.FinalProjectTheme
 import kotlinx.coroutines.launch
@@ -37,12 +40,14 @@ fun EditScreen(
     ) {
 
         Row(Modifier.fillMaxWidth()) {
+            Spacer(modifier = Modifier.weight(0.5f))
             Text(
                 text = "Edit Your Schedules", modifier = Modifier
-                    .padding(all = 20.dp)
-                    .padding(top = 15.dp)
+                    .padding(all = 10.dp)
+                    .weight(1f,false),
+                fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.weight(0.5f))
             Button(
                 onClick = { navController.navigate(route = Screens.Schedule.route) },
                 modifier = Modifier.width(150.dp),

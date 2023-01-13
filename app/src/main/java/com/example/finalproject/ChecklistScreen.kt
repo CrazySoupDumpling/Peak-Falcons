@@ -16,7 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlin.collections.ArrayList
 
@@ -40,9 +43,9 @@ fun ChecklistScreen(
                     text = schedule?.name.toString(),
                     modifier = Modifier
                         .padding(all = 20.dp)
-                        .padding(top = 15.dp)
+                        .weight(1f,false),
+                    fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
                 )
-                Spacer(modifier = Modifier.weight(1f))
                 Button(
                     onClick = { navController.navigate(route = Screens.Schedule.route) },
                     modifier = Modifier.width(150.dp),
@@ -96,9 +99,10 @@ fun ChecklistScreen(
                     Text(text = "Checklist")
                 }
                 Spacer(modifier = Modifier.weight(0.5f))
-
-                Button(onClick = {navController.navigate("${Screens.ThisThen.route}/${scheduleID}")  }, enabled = true, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))  ) {
-                    Text(text = "This Then")
+                if (schedule != null){
+                    Button(onClick = {navController.navigate("${Screens.ThisThen.route}/${scheduleID}")  }, enabled = schedule.items.scheduleItems.size>1, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))  ) {
+                        Text(text = "This Then")
+                    }
                 }
                 Spacer(modifier = Modifier.weight(0.5f))
                 Button(onClick = {navController.navigate("${Screens.ItembyItem.route}/${scheduleID}")  }, enabled = true, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen)) ) {

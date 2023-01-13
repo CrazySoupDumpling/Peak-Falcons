@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,9 +47,9 @@ Column(
                 text = schedule?.name.toString(),
                 modifier = Modifier
                     .padding(all = 20.dp)
-                    .padding(top = 15.dp)
+                    .weight(1f,false),
+                fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.weight(1f))
             Button(onClick = {navController.navigate(route = Screens.Schedule.route)}, modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.TitleGreen))) {
                 Text(text = "exit", modifier = Modifier.padding(all = 20.dp))
@@ -81,7 +83,7 @@ Column(
 
     Row(
         modifier = Modifier
-            .weight(1f, false)
+            .height(200.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -97,6 +99,24 @@ Column(
             modifier = Modifier.width(200.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
         ) {
             Text(text = "Next", modifier = Modifier.padding(all = 40.dp), fontSize = 20.sp)
+        }
+    }
+    Column(Modifier.height(90.dp)) {
+        Row() {
+            Button(onClick = {navController.navigate("${Screens.Checklist.route}/${scheduleID}")  }, enabled = true, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))) {
+                Text(text = "Checklist")
+            }
+            Spacer(modifier = Modifier.weight(0.5f))
+
+            if (schedule != null){
+                Button(onClick = {navController.navigate("${Screens.ThisThen.route}/${scheduleID}")  }, enabled = schedule.items.scheduleItems.size>1, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))  ) {
+                    Text(text = "This Then")
+                }
+            }
+            Spacer(modifier = Modifier.weight(0.5f))
+            Button(onClick = {navController.navigate("${Screens.ItembyItem.route}/${scheduleID}")  }, enabled = false, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen)) ) {
+                Text(text = "One At a Time")
+            }
         }
     }
     //Spacer(modifier = Modifier.weight(.1f))
