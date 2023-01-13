@@ -7,7 +7,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
@@ -27,11 +26,10 @@ fun EditScheduleScreen(
 ) {
     viewModel.findSchedule(scheduleID)
     val schedule: Schedule? =  viewModel.searchResults.observeAsState().value?.get(0)
-    lateinit var itemList: SnapshotStateList<String>
-    if (schedule != null) {
-        itemList = remember {schedule.items.scheduleItems }
+    val itemList: SnapshotStateList<String> = if (schedule != null) {
+        remember {schedule.items.scheduleItems }
     }else{
-        itemList = remember {SnapshotStateList() }
+        remember {SnapshotStateList() }
     }
     Column(modifier = Modifier.fillMaxHeight().background(colorResource(R.color.Background))) {
         Column(modifier = Modifier
@@ -42,7 +40,7 @@ fun EditScheduleScreen(
                     Text(
                         text = schedule.name, modifier = Modifier
                             .padding(all = 10.dp)
-                            .weight(1f,false),
+                            .weight(1f),
                         fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
                     )
                     Button(
@@ -55,7 +53,7 @@ fun EditScheduleScreen(
                 }
                 for (i in 0 until itemList.size) {
                     Text("Item #${i + 1}", modifier = Modifier.padding(all = 10.dp))
-                    Row() {
+                    Row {
                         TextField(
                             value = itemList[i],
                             onValueChange = { itemList[i] = it },
@@ -71,8 +69,8 @@ fun EditScheduleScreen(
                 Text("Add Item")
             }
         }
-        Column(){
-            Row() {
+        Column{
+            Row {
                 Button(onClick = {
                     if (schedule != null) {
                         schedule.items = ScheduleItems(itemList)

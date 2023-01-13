@@ -2,11 +2,10 @@ package com.example.finalproject
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
 @Composable
@@ -20,7 +19,7 @@ fun SetupNavGraph(
             route = Screens.Schedule.route
         ){
             val allSchedules by viewModel.allSchedules.observeAsState(listOf())
-            ScheduleScreen(schedules = allSchedules, navController = navController, viewModel = viewModel)
+            ScheduleScreen(schedules = allSchedules, navController = navController)
         }
         composable(
             route = Screens.Edit.route
@@ -103,13 +102,13 @@ fun SetupNavGraph(
                 backStackEntry ->
             val x: String? = backStackEntry.arguments?.getString("scheduleId")
             if (x != null) {
-                twoItemSched(
+                TwoItemSched(
                     scheduleID = x.toInt(),
                     navController = navController,
                     viewModel =  viewModel
                 )
             }else{
-                twoItemSched(
+                TwoItemSched(
                     scheduleID = 1,
                     navController = navController,
                     viewModel = viewModel

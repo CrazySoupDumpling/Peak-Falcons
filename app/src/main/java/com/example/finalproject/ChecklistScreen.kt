@@ -1,17 +1,17 @@
 package com.example.finalproject
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -21,7 +21,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import kotlin.collections.ArrayList
 
 @Composable
 fun ChecklistScreen(
@@ -33,7 +32,7 @@ fun ChecklistScreen(
 
     viewModel.findSchedule(scheduleID)
     val schedule: Schedule? = viewModel.searchResults.observeAsState().value?.get(0)
-    var checkedList = remember { mutableStateListOf<Boolean>() }
+    val checkedList = remember { mutableStateListOf<Boolean>() }
     Column(Modifier.fillMaxHeight().background(colorResource(R.color.Background))) {
         Column(Modifier.verticalScroll(rememberScrollState()).weight(1f)) {
 
@@ -43,7 +42,7 @@ fun ChecklistScreen(
                     text = schedule?.name.toString(),
                     modifier = Modifier
                         .padding(all = 20.dp)
-                        .weight(1f,false),
+                        .weight(1f),
                     fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
                 )
                 Button(
@@ -56,7 +55,7 @@ fun ChecklistScreen(
             }
 
             if (schedule != null) {
-                for (i in 0..schedule?.items?.scheduleItems?.size - 1) {
+                for (i in 0 until schedule.items.scheduleItems.size) {
                     if (i >= checkedList.size) {
                         checkedList.add(false)
                     }
@@ -83,18 +82,16 @@ fun ChecklistScreen(
                             )
                         }
 //                Spacer(modifier = Modifier.weight(1f))
-                        if (schedule != null) {
-                            Text(
-                                text = schedule.items.scheduleItems[i],
-                                modifier = Modifier.padding(all = 20.dp).weight(1f)
-                            )
-                        }
+                        Text(
+                            text = schedule.items.scheduleItems[i],
+                            modifier = Modifier.padding(all = 20.dp).weight(1f)
+                        )
                     }
                 }
             }
         }
         Column(Modifier.height(90.dp)) {
-            Row() {
+            Row {
                 Button(onClick = {navController.navigate("${Screens.Checklist.route}/${scheduleID}")  }, enabled = false, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))) {
                     Text(text = "Checklist")
                 }

@@ -1,34 +1,24 @@
 package com.example.finalproject
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.finalproject.ui.theme.FinalProjectTheme
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Observer
+import androidx.navigation.NavController
 
 @Composable
 fun ScheduleScreen(
     schedules: List<Schedule>,
     navController: NavController,
-    viewModel: MainViewModel
 ) {
     Column(
         Modifier
@@ -46,7 +36,7 @@ fun ScheduleScreen(
                 Text(text = "edit ", modifier = Modifier.padding(all = 20.dp))
             }
         }
-        for(i in 0..schedules.size-1){
+        for(i in schedules.indices){
             Button(onClick = {navController.navigate(route= "${Screens.Checklist.route}/${schedules[i].id}") },modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 10.dp) , colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))) {
@@ -59,29 +49,6 @@ fun ScheduleScreen(
             }
         }
     }
-}
-
-@Composable
-fun CustomTextField(
-    title: String,
-    textState: String,
-    onTextChange: (String) -> Unit,
-    keyboardType: KeyboardType
-) {
-    OutlinedTextField(
-        value = textState,
-        onValueChange = { onTextChange(it) },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType
-        ),
-        singleLine = true,
-        label = { Text(title) },
-        modifier = Modifier.padding(10.dp),
-        textStyle = TextStyle(
-            fontWeight = FontWeight.Bold,
-            fontSize = 30.sp
-        )
-    )
 }
 
 //@Preview(showBackground = true)

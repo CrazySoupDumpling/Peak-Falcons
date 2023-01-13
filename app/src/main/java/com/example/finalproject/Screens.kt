@@ -5,7 +5,7 @@ sealed class Screens(val route: String) {
     object Edit: Screens(route = "EditScreen")
     object Checklist: Screens(route = "ChecklistScreen")
     object ItembyItem: Screens(route = "ItemByItemSched")
-    object ThisThen: Screens(route = "twoItemSched")
+    object ThisThen: Screens(route = "TwoItemSched")
     object Create: Screens(route = "CreateScheduleScreen")
     object EditSchedule: Screens(route = "EditScheduleScreen")
 

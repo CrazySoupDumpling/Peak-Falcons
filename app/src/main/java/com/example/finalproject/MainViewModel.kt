@@ -27,14 +27,9 @@ class MainViewModel(application: Application) : ViewModel() {
     fun updateSchedule(schedule: Schedule) {
         repository.updateSchedule(schedule)
     }
-
-    fun findSchedule(name: String) {
-        repository.findSchedule(name)
-    }
     fun findSchedule(id: Int) {
         repository.findSchedule(id)
     }
-
     fun deleteSchedule(id: Int) {
         repository.deleteSchedule(id)
     }

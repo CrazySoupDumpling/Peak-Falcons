@@ -1,30 +1,21 @@
 package com.example.finalproject
 
-import android.content.Context
-import android.os.Bundle
-import android.util.Log
-//import android.util.DisplayMetrics
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.finalproject.ui.theme.FinalProjectTheme
-import kotlinx.coroutines.launch
 
 @Composable
 fun EditScreen(
@@ -58,7 +49,7 @@ fun EditScreen(
         }
         Spacer(modifier = Modifier.height(40.dp))
         for (schedule in schedules) {
-            Row() {
+            Row {
                 Button(
                     onClick = { navController.navigate("${Screens.EditSchedule.route}/${schedule.id}") },
                     modifier = Modifier
