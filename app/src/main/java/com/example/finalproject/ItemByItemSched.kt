@@ -2,6 +2,7 @@ package com.example.finalproject
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -27,6 +28,18 @@ fun ItemByItemSched(
     viewModel.findSchedule(scheduleID)
     val schedule: Schedule? = viewModel.searchResults.observeAsState().value?.get(0)
     var itemNum by remember { mutableStateOf(0) }
+    var congrats by remember { mutableStateOf(false)}
+
+    if(congrats){
+        PopUpCongrats {
+            navController.navigate(Screens.Schedule.route){
+                popUpTo(Screens.Schedule.route) {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
 Column(
     Modifier
         .fillMaxHeight()
@@ -82,14 +95,17 @@ Column(
             onClick = {if(itemNum>0)itemNum--},
             modifier = Modifier.width(200.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
         ) {
-            Text(text = "Previous", modifier = Modifier.padding(all = 40.dp), fontSize = 20.sp)
+            Text(text = "Previous", modifier = Modifier.padding(all = 40.dp), fontSize = 15.sp)
         }
         //Spacer(modifier = Modifier.weight(.25f))
         Button(
-            onClick = {if(itemNum<toSize)itemNum++},
+            onClick = {
+                if(itemNum<toSize)itemNum++
+                else{congrats = true}
+                      },
             modifier = Modifier.width(200.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
         ) {
-            Text(text = "Next", modifier = Modifier.padding(all = 40.dp), fontSize = 20.sp)
+            Text(text = "Next", modifier = Modifier.padding(all = 40.dp), fontSize = 15.sp)
         }
     }
     Column(Modifier.height(90.dp)) {

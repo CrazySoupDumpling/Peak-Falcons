@@ -167,7 +167,7 @@ fun TwoItemSched(
                 onClick = {if(itemNum>0)itemNum--},
                 modifier = Modifier.width(200.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
             ) {
-                Text(text = "Previous", modifier = Modifier.padding(all = 40.dp), fontSize = 20.sp)
+                Text(text = "Previous", modifier = Modifier.padding(all = 40.dp), fontSize = 15.sp)
             }
             //Spacer(modifier = Modifier.weight(.25f))
             Button(
@@ -183,7 +183,7 @@ fun TwoItemSched(
                     modifier = Modifier.width(200.dp)
                     ) {
 
-                    Text(text = "Next", modifier = Modifier.padding(all = 40.dp), fontSize = 20.sp)
+                    Text(text = "Next", modifier = Modifier.padding(all = 40.dp), fontSize = 15.sp)
             }
         }
         Column(Modifier.height(90.dp)) {
