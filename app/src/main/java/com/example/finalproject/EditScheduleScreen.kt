@@ -73,7 +73,7 @@ fun EditScheduleScreen(
             Row {
                 Button(onClick = {
                     if (schedule != null) {
-                        schedule.items = ScheduleItems(itemList)
+                        schedule.items = ScheduleItems(itemList, SnapshotStateList())
                         viewModel.updateSchedule(schedule)
                         navController.navigate(Screens.Edit.route)
                     }

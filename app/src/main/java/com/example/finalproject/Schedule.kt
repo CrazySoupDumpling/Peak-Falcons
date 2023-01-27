@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "schedules")
-class Schedule constructor(name: String, items: ScheduleItems){
+class Schedule constructor(name: String, items: ScheduleItems ){
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
