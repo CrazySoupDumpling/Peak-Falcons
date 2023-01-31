@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -26,11 +27,14 @@ fun CreateScheduleScreen(
 ) {
     Column(modifier = Modifier.fillMaxHeight().verticalScroll(rememberScrollState()).background(colorResource(R.color.Background))){
         Row( modifier = Modifier.fillMaxWidth()){
-            Text(text = "Create A New Schedule", modifier = Modifier
-                .padding(all = 20.dp)
-                .padding(top = 15.dp),
-                fontWeight = FontWeight.Bold, fontSize = 30.sp)
-            Spacer(modifier = Modifier.width(70.dp))
+            Spacer(modifier = Modifier.weight(0.5f))
+            Text(
+                text = "Create a New Schedule", modifier = Modifier
+                    .padding(all = 10.dp)
+                    .weight(1f,false),
+                fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.weight(0.5f))
             Button(onClick = {navController.navigate(route = Screens.Edit.route)},
                 colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.TitleGreen))) {
                 Text(text = "Done ", modifier = Modifier.padding(all = 20.dp))
