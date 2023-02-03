@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "schedules")
-class Schedule constructor(name: String, items: ScheduleItems/*, startTime: String*/ ){
+class Schedule constructor(name: String, items: ScheduleItems, startTime: String ){
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
@@ -21,9 +21,9 @@ class Schedule constructor(name: String, items: ScheduleItems/*, startTime: Stri
     @NonNull
     var items: ScheduleItems = items
 
-//    @ColumnInfo(name = "items")
-//    @NonNull
-//    var startTime: String = startTime
+    @ColumnInfo(name = "alarmTime")
+    @NonNull
+    var startTime: String = startTime
 }
 
 

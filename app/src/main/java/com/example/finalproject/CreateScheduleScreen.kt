@@ -218,7 +218,7 @@ fun CreateScheduleScreen(
                                     Schedule(
                                         name = scheduleName.value.text,
                                         items = ScheduleItems(itemListOfStrings, timerListOfStrings)
-//                                        , startTime = alarmTime
+                                        , startTime = alarmTime
                                     )
                                 )
                                 navController.navigate(Screens.Schedule.route)
