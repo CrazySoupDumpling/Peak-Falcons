@@ -16,6 +16,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import android.media.MediaPlayer
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun ItemByItemSched(
@@ -24,7 +26,10 @@ fun ItemByItemSched(
     viewModel: MainViewModel
 
 ) {
+    val mContext = LocalContext.current
 
+    val mMediaPlayer = MediaPlayer.create(mContext, R.raw.timerbeep)
+    //mMediaPlayer.start()
     viewModel.findSchedule(scheduleID)
     val schedule: Schedule? = viewModel.searchResults.observeAsState().value?.get(0)
     var itemNum by remember { mutableStateOf(0) }

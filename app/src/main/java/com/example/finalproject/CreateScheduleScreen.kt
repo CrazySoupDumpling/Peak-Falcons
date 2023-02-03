@@ -4,18 +4,17 @@ import android.app.TimePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -101,14 +100,66 @@ fun CreateScheduleScreen(
 
 
 
-            for (counter in 0 until items.size) {
 
-                val mTimePickerDialog = TimePickerDialog(
-                    context,
-                    { _, mHour: Int, mMinute: Int ->
-                        timerTimes[counter] = "$mHour:$mMinute"
-                    }, mHour, mMinute, false
+            for (counter in 0 until items.size) {
+                val timeAllocated = remember { mutableStateOf(TextFieldValue()) }
+                val temp = timeAllocated.value
+                var openDialog by remember{ mutableStateOf(false) }
+                if(openDialog){AlertDialog(
+
+                    onDismissRequest = {},
+                    title = {
+                        Text(text = "Set a time limit")
+                    },
+                    text = {
+                        TextField(
+                            value = timeAllocated.value,
+                            label = { Text("Enter number of minutes allocated") },
+                            onValueChange = { timeAllocated.value = it },
+                            colors = TextFieldDefaults.textFieldColors(
+                                focusedIndicatorColor = colorResource(R.color.SubGreen),
+                                cursorColor = colorResource(R.color.SubGreen),
+                                placeholderColor = colorResource(R.color.SubGreen),
+                                trailingIconColor = colorResource(R.color.SubGreen)
+                            ),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        )
+                    },
+                    confirmButton = {
+                        Row(
+                            modifier = Modifier
+
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Button(
+                                onClick = {
+                                    timerTimes[counter] = "45"
+                                    timeAllocated.value = temp
+                                    openDialog = false
+                                          },
+                                modifier = Modifier.width(150.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
+                            ) {
+                                Text(text = "Cancel", modifier = Modifier.padding(all = 10.dp), fontSize = 11.sp)
+                            }
+
+                            Button(
+                                onClick = {
+                                    openDialog = false
+                                    timerTimes[counter] = timeAllocated.value.text
+                                }, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen)),
+                                modifier = Modifier.width(150.dp)
+                            ) {
+
+                                Text(text = "Confirm", modifier = Modifier.padding(all = 10.dp), fontSize = 11.sp)
+                            }
+                        }
+                    }
+
+
                 )
+                }
+
 
                 Text("Task #${counter + 1}")
                 Row {
@@ -132,7 +183,7 @@ fun CreateScheduleScreen(
                     }
                 }
                 Button(
-                    onClick = { mTimePickerDialog.show() },
+                    onClick = { openDialog = true},
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFF0F9D58))
                 ) {
                     Text(text = "Set Time Limit", color = Color.White)
