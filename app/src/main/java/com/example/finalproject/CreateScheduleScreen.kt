@@ -23,102 +23,164 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import java.util.*
 
+
 @Composable
 fun CreateScheduleScreen(
     navController: NavController,
     viewModel: MainViewModel
 ) {
-    Column(modifier = Modifier.fillMaxHeight().verticalScroll(rememberScrollState()).background(colorResource(R.color.Background))){
-        Row( modifier = Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.weight(0.5f))
-            Text(
-                text = "Create a New Schedule", modifier = Modifier
-                    .padding(all = 10.dp)
-                    .weight(1f,false),
-                fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.weight(0.5f))
-            Button(
-                onClick = { navController.navigate(route = Screens.Edit.route) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.TitleGreen))
-            ) {
-                Text(text = "Done ", modifier = Modifier.padding(all = 20.dp))
-            }
-        }
-        val context = LocalContext.current
-        val mCalendar = Calendar.getInstance()
-        val mHour = mCalendar[Calendar.HOUR_OF_DAY]
-        val mMinute = mCalendar[Calendar.MINUTE]
 
+
+    Column(modifier = Modifier.fillMaxHeight().background(colorResource(R.color.Background))) {
 
         val scheduleName = remember { mutableStateOf(TextFieldValue()) }
-//        Button(onClick = { mTimePickerDialog.show() }, colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFF0F9D58))) {
-//            Text(text = "Open Time Picker", color = Color.White)
-//        }
-        Text(text = "Schedule Name")
-        TextField(
-            value = scheduleName.value,
-            onValueChange = { scheduleName.value = it },
-            colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor =  colorResource(R.color.SubGreen), cursorColor = colorResource(R.color.SubGreen), placeholderColor = colorResource(R.color.SubGreen), trailingIconColor = colorResource(R.color.SubGreen))
-        )
         val items = remember {
-            mutableStateListOf<TextFieldValue>()}
+            mutableStateListOf<TextFieldValue>()
+        }
 
-        val alarmTimes = remember {
-            mutableStateListOf<String>()}
+        val timerTimes = remember {
+            mutableStateListOf<String>()
+        }
+        var alarmTime = ""
 
-
-
-        for (counter in 0 until items.size) {
-
-            val mTimePickerDialog = TimePickerDialog(
-                context,
-                {_, mHour : Int, mMinute: Int ->
-                    alarmTimes[counter] = "$mHour:$mMinute"
-                }, mHour, mMinute, false
-            )
-
-            Text("Item #${counter + 1}")
-            Row{
-                TextField(
-                    value = items[counter],
-                    onValueChange = { items[counter] = it },
-                    colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor =  colorResource(R.color.SubGreen), cursorColor = colorResource(R.color.SubGreen), placeholderColor = colorResource(R.color.SubGreen), trailingIconColor = colorResource(R.color.SubGreen))
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState()).weight(1f)
+        ) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Spacer(modifier = Modifier.weight(0.5f))
+                Text(
+                    text = "Create a New Schedule", modifier = Modifier
+                        .padding(all = 10.dp)
+                        .weight(1f, false),
+                    fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
                 )
-                Button(onClick ={items.removeAt(counter)},colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)){
-                    Text(text = "Delete")
+                Spacer(modifier = Modifier.weight(0.5f))
+                Button(
+                    onClick = { navController.navigate(route = Screens.Edit.route) },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.TitleGreen))
+                ) {
+                    Text(text = "Done ", modifier = Modifier.padding(all = 20.dp))
                 }
             }
-            Button(onClick = { mTimePickerDialog.show() }, colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFF0F9D58))) {
-                Text(text = "Apply Alarm", color = Color.White)
-            }
-        }
-        Row{
-            Button(onClick = { items.add(TextFieldValue(text = ""));alarmTimes.add("") }, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))) {
-                Text(text = "Add Item")
+            val context = LocalContext.current
+            val mCalendar = Calendar.getInstance()
+            val mHour = mCalendar[Calendar.HOUR_OF_DAY]
+            val mMinute = mCalendar[Calendar.MINUTE]
+
+
+
+
+            Text(text = "Schedule Name")
+            Row(modifier = Modifier.fillMaxWidth()) {
+
+                val mTimePickerDialog = TimePickerDialog(
+                    context,
+                    {_, mHour : Int, mMinute: Int ->
+                        alarmTime = "$mHour:$mMinute"
+                    }, mHour, mMinute, false
+                )
+                TextField(
+                    value = scheduleName.value,
+                    onValueChange = { scheduleName.value = it },
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = colorResource(R.color.SubGreen),
+                        cursorColor = colorResource(R.color.SubGreen),
+                        placeholderColor = colorResource(R.color.SubGreen),
+                        trailingIconColor = colorResource(R.color.SubGreen)
+                    )
+                )
+                Button(
+                    onClick = { mTimePickerDialog.show() },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFF0F9D58))
+                ) {
+                    Text(text = "Set Start Time", color = Color.White, fontSize = 13.sp)
+                }
             }
 
-            Button(onClick = {
-                if (scheduleName.value.text.isNotEmpty() &&items.size > 0 && items[0].text.isNotEmpty()) {
-                    val itemListOfStrings: SnapshotStateList<String> = SnapshotStateList()
-                    val alarmListOfStrings: SnapshotStateList<String> = SnapshotStateList()
-                    for (i in 0 until items.size) {
-                        itemListOfStrings.add(items[i].text)
-                        alarmListOfStrings.add(alarmTimes[i])
-                    }
 
-                    viewModel.insertSchedule(
-                        Schedule(
-                            name = scheduleName.value.text,
-                            items = ScheduleItems(itemListOfStrings, alarmListOfStrings)
+
+
+
+            for (counter in 0 until items.size) {
+
+                val mTimePickerDialog = TimePickerDialog(
+                    context,
+                    { _, mHour: Int, mMinute: Int ->
+                        timerTimes[counter] = "$mHour:$mMinute"
+                    }, mHour, mMinute, false
+                )
+
+                Text("Task #${counter + 1}")
+                Row {
+                    TextField(
+                        value = items[counter],
+                        onValueChange = { items[counter] = it },
+                        colors = TextFieldDefaults.textFieldColors(
+                            focusedIndicatorColor = colorResource(
+                                R.color.SubGreen
+                            ),
+                            cursorColor = colorResource(R.color.SubGreen),
+                            placeholderColor = colorResource(R.color.SubGreen),
+                            trailingIconColor = colorResource(R.color.SubGreen)
                         )
                     )
-                    navController.navigate(Screens.Schedule.route)
+                    Button(
+                        onClick = { items.removeAt(counter) },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
+                    ) {
+                        Text(text = "Delete")
+                    }
                 }
-            }, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))){
-                Text(text = "Save Schedule")
+                Button(
+                    onClick = { mTimePickerDialog.show() },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFF0F9D58))
+                ) {
+                    Text(text = "Set Time Limit", color = Color.White)
+                }
+            }
+            Row {
+                Button(
+                    onClick = { items.add(TextFieldValue(text = ""));timerTimes.add("") },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
+                ) {
+                    Text(text = "Add Task")
+                }
             }
         }
+            Column {
+                Row {
+                    Button(
+                        onClick = {
+                            if (scheduleName.value.text.isNotEmpty() && items.size > 0 && items[0].text.isNotEmpty()) {
+                                val itemListOfStrings: SnapshotStateList<String> =
+                                    SnapshotStateList()
+                                val timerListOfStrings: SnapshotStateList<String> =
+                                    SnapshotStateList()
+                                for (i in 0 until items.size) {
+                                    itemListOfStrings.add(items[i].text)
+                                    timerListOfStrings.add(timerTimes[i])
+                                }
+                                val alarmTime = alarmTime
+
+                                viewModel.insertSchedule(
+                                    Schedule(
+                                        name = scheduleName.value.text,
+                                        items = ScheduleItems(itemListOfStrings, timerListOfStrings)
+                                    )
+                                )
+                                navController.navigate(Screens.Schedule.route)
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
+                    ) {
+                        Text(text = "Save Schedule")
+                    }
+
+                }
+            }
+
+
     }
+
 
 }

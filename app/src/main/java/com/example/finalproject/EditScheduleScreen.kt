@@ -35,8 +35,8 @@ fun EditScheduleScreen(
     }else{
         remember {SnapshotStateList() }
     }
-    val alarmList: SnapshotStateList<String> = if (schedule != null) {
-        remember {schedule.items.scheduleAlarms }
+    val timerList: SnapshotStateList<String> = if (schedule != null) {
+        remember {schedule.items.scheduleTimers }
     }else{
         remember {SnapshotStateList() }
     }
@@ -70,35 +70,35 @@ fun EditScheduleScreen(
                     val mTimePickerDialog = TimePickerDialog(
                         context,
                         {_, mHour : Int, mMinute: Int ->
-                            alarmList[i] = "$mHour:$mMinute"
+                            timerList[i] = "$mHour:$mMinute"
                         }, mHour, mMinute, false
                     )
 
-                    Text("Item #${i + 1}", modifier = Modifier.padding(all = 10.dp))
+                    Text("Task #${i + 1}", modifier = Modifier.padding(all = 10.dp))
                     Row {
                         TextField(
                             value = itemList[i],
                             onValueChange = { itemList[i] = it },
                             colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor =  colorResource(R.color.SubGreen), cursorColor = colorResource(R.color.SubGreen), placeholderColor = colorResource(R.color.SubGreen), trailingIconColor = colorResource(R.color.SubGreen))
                         )
-                        Button(onClick = { itemList.removeAt(i); alarmList.removeAt(i) }, colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)) {
+                        Button(onClick = { itemList.removeAt(i);timerList.removeAt(i) }, colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)) {
                             Text("Delete")
                         }
                     }
                     Button(onClick = { mTimePickerDialog.show() }, colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFF0F9D58))) {
-                        Text(text = "Open Time Picker", color = Color.White)
+                        Text(text = "Change Time Limit", color = Color.White)
                     }
                 }
             }
-            Button(onClick = {itemList.add(""); alarmList.add("")}, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))){
-                Text("Add Item")
+            Button(onClick = {itemList.add(""); timerList.add("")}, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))){
+                Text("Add Task")
             }
         }
         Column{
             Row {
                 Button(onClick = {
                     if (schedule != null) {
-                        schedule.items = ScheduleItems(itemList, alarmList)
+                        schedule.items = ScheduleItems(itemList, timerList)
                         viewModel.updateSchedule(schedule)
                         navController.navigate(Screens.Edit.route)
                     }

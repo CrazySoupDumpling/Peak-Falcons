@@ -36,7 +36,7 @@ fun EditScreen(
                 text = "Edit Your Schedules", modifier = Modifier
                     .padding(all = 10.dp)
                     .weight(1f,false),
-                fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
+                fontWeight = FontWeight.Bold, fontSize = 15.sp, textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.weight(0.5f))
             Button(
@@ -69,7 +69,8 @@ fun EditScreen(
                     modifier = Modifier.width(100.dp).padding(vertical = 30.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
                 ) {
-                    Text(text = "Delete Schedule")
+                    Text(text = "Delete Schedule",
+                        fontSize = 11.sp)
                 }
             }
         }
@@ -84,7 +85,7 @@ fun EditScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = 10.dp),
+                .padding(all = 14.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
         ) {
 

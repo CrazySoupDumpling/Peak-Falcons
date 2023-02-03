@@ -36,7 +36,7 @@ fun PopUpCongrats(navigate: () -> Unit ) {
                     Text(text = "Congrats")
                 },
                 text = {
-                    Text("You have no more items on your schedule")
+                    Text("You have no more tasks left for your schedule")
                 },
                 buttons = {
 
@@ -104,7 +104,7 @@ fun TwoItemSched(
             .align(Alignment.CenterHorizontally)
 
 
-        if(itemNum<toSize) {
+        if(itemNum<=toSize) {
             Column {
 
                 Box(
@@ -116,29 +116,30 @@ fun TwoItemSched(
                         Text(
                             text = schedule.items.scheduleItems[itemNum],
                             modifier = Modifier.padding(all = 30.dp),
-                            fontSize = 50.sp
+                            fontSize = 30.sp
                         )
                     }
                 }
                 Spacer(modifier = Modifier.height(30.dp))
-
-                Image(
-                    painterResource(R.drawable.downarrow),
-                    contentDescription = "Item Completed",
-                    modifier = imageModifier
-                )
-                Spacer(modifier = Modifier.height(30.dp))
-                Box(
-                    modifier = Modifier
-                        .border(20.dp, Color.Black)
-                        .fillMaxWidth()
-                ) {
-                    if (schedule != null) {
-                        Text(
-                            text = schedule.items.scheduleItems[itemNum + 1],
-                            modifier = Modifier.padding(all = 30.dp),
-                            fontSize = 50.sp
-                        )
+                if(itemNum!=toSize) {
+                    Image(
+                        painterResource(R.drawable.downarrow),
+                        contentDescription = "Item Completed",
+                        modifier = imageModifier
+                    )
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Box(
+                        modifier = Modifier
+                            .border(20.dp, Color.Black)
+                            .fillMaxWidth()
+                    ) {
+                        if (schedule != null) {
+                            Text(
+                                text = schedule.items.scheduleItems[itemNum + 1],
+                                modifier = Modifier.padding(all = 30.dp),
+                                fontSize = 30.sp
+                            )
+                        }
                     }
                 }
 
@@ -167,13 +168,13 @@ fun TwoItemSched(
                 onClick = {if(itemNum>0)itemNum--},
                 modifier = Modifier.width(200.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
             ) {
-                Text(text = "Previous", modifier = Modifier.padding(all = 40.dp), fontSize = 15.sp)
+                Text(text = "Previous", modifier = Modifier.padding(all = 10.dp), fontSize = 13.sp)
             }
             //Spacer(modifier = Modifier.weight(.25f))
             Button(
                 onClick = {
-                    if(itemNum<toSize)itemNum++
-                    if(itemNum==toSize){
+                    if(itemNum<=toSize)itemNum++
+                    if(itemNum>toSize){
 
                         popUpYN = true
 
@@ -183,7 +184,7 @@ fun TwoItemSched(
                     modifier = Modifier.width(200.dp)
                     ) {
 
-                    Text(text = "Next", modifier = Modifier.padding(all = 40.dp), fontSize = 15.sp)
+                    Text(text = "Next", modifier = Modifier.padding(all = 10.dp), fontSize = 13.sp)
             }
         }
         Column(Modifier.height(90.dp)) {
