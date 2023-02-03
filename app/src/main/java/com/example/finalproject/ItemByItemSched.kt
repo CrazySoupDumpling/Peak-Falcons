@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import android.media.MediaPlayer
+import android.os.Handler
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
@@ -96,9 +97,14 @@ Column(
 
 
      */
-    if(schedule!= null && schedule.items.scheduleTimers[itemNum].toInt()>70){
-        mMediaPlayer.start()
-    }
+//    var count by remember { mutableStateOf(1) }
+//    if(schedule!= null && schedule.items.scheduleTimers[itemNum].toInt()>70 && count ==1){
+//        mMediaPlayer.start()
+//        Handler().postDelayed({
+//            count++
+//        }, 3000)
+//
+//    }
 
     Row(
         modifier = Modifier
