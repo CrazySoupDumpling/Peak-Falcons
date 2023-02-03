@@ -88,7 +88,17 @@ Column(
             }
         }
     }
+    /*
+    Plan:
+    pressing next cancels timer and moves to next timer
 
+
+
+
+     */
+    if(schedule!= null && schedule.items.scheduleTimers[itemNum].toInt()>70){
+        mMediaPlayer.start()
+    }
 
     Row(
         modifier = Modifier

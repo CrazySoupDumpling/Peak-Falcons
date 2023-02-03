@@ -102,6 +102,7 @@ fun CreateScheduleScreen(
 
 
             for (counter in 0 until items.size) {
+                timerTimes[counter] = "45"
                 val timeAllocated = remember { mutableStateOf(TextFieldValue()) }
                 val temp = timeAllocated.value
                 var openDialog by remember{ mutableStateOf(false) }
@@ -217,6 +218,7 @@ fun CreateScheduleScreen(
                                     Schedule(
                                         name = scheduleName.value.text,
                                         items = ScheduleItems(itemListOfStrings, timerListOfStrings)
+//                                        , startTime = alarmTime
                                     )
                                 )
                                 navController.navigate(Screens.Schedule.route)

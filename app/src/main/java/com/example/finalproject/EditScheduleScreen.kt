@@ -97,7 +97,8 @@ fun EditScheduleScreen(
                 }
                 for (i in 0 until itemList.size) {
 
-                    val timeAllocated = remember { mutableStateOf(TextFieldValue()) }
+                    val timeAllocated = remember { mutableStateOf(TextFieldValue(schedule.items.scheduleTimers[i])) }
+
                     val temp = timeAllocated.value
                     var openDialog by remember{ mutableStateOf(false) }
                     if(openDialog){AlertDialog(
@@ -179,10 +180,14 @@ fun EditScheduleScreen(
             Row {
                 Button(onClick = {
                     if (schedule != null) {
-                        if(schedule.name != newScheduleName.value.text) {
+                        if(schedule.name != newScheduleName.value.text && newScheduleName.value.text != "" ) {
                             schedule.name = newScheduleName.value.text
                         }
                         schedule.items = ScheduleItems(itemList, timerList)
+//                        if(alarmTime != ""){
+//                            schedule.startTime = alarmTime
+//                        }
+
                         viewModel.updateSchedule(schedule)
                         navController.navigate(Screens.Edit.route)
                     }
