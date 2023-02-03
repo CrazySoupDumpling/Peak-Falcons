@@ -102,7 +102,7 @@ fun CreateScheduleScreen(
 
 
             for (counter in 0 until items.size) {
-                timerTimes[counter] = "45"
+                //timerTimes[counter] = "45"
                 val timeAllocated = remember { mutableStateOf(TextFieldValue()) }
                 val temp = timeAllocated.value
                 var openDialog by remember{ mutableStateOf(false) }
@@ -135,8 +135,12 @@ fun CreateScheduleScreen(
                         ) {
                             Button(
                                 onClick = {
+                                    if(temp.text == ""){
                                     timerTimes[counter] = "45"
-                                    timeAllocated.value = temp
+                                    timeAllocated.value = temp}else{
+                                        timerTimes[counter] = temp.text
+                                        timeAllocated.value = temp
+                                    }
                                     openDialog = false
                                           },
                                 modifier = Modifier.width(150.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))

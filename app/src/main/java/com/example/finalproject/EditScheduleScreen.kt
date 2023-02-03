@@ -130,7 +130,7 @@ fun EditScheduleScreen(
                             ) {
                                 Button(
                                     onClick = {
-                                        timerList[i] = "45"
+                                        timerList[i] = temp.text
                                         timeAllocated.value = temp
                                         openDialog = false
                                     },
