@@ -1,8 +1,13 @@
 package com.example.finalproject
 
+import android.content.Context
+import android.media.MediaPlayer
+import android.media.RingtoneManager
+import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -10,15 +15,15 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import android.media.MediaPlayer
-import android.os.Handler
-import androidx.compose.ui.platform.LocalContext
+import androidx.test.core.app.ApplicationProvider.getApplicationContext
+
 
 @Composable
 fun ItemByItemSched(
@@ -28,8 +33,12 @@ fun ItemByItemSched(
 
 ) {
     val mContext = LocalContext.current
+    var count by remember { mutableStateOf(true) }
 
-    val mMediaPlayer = MediaPlayer.create(mContext, R.raw.timerbeep)
+    //var mMediaPlayer: MediaPlayer? = null
+    //val mMediaPlayer = MediaPlayer.create(mContext, R.raw.timerbeep)
+
+
     //mMediaPlayer.start()
     viewModel.findSchedule(scheduleID)
     val schedule: Schedule? = viewModel.searchResults.observeAsState().value?.get(0)
@@ -81,6 +90,8 @@ Column(
                 .fillMaxWidth()
         ) {
             if (schedule != null) {
+
+
                 Text(
                     text = schedule.items.scheduleItems[itemNum],
                     modifier = Modifier.padding(all = 30.dp),
@@ -97,14 +108,7 @@ Column(
 
 
      */
-//    var count by remember { mutableStateOf(1) }
-//    if(schedule!= null && schedule.items.scheduleTimers[itemNum].toInt()>70 && count ==1){
-//        mMediaPlayer.start()
-//        Handler().postDelayed({
-//            count++
-//        }, 3000)
-//
-//    }
+
 
     Row(
         modifier = Modifier
@@ -113,7 +117,10 @@ Column(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Button(
-            onClick = {if(itemNum>0)itemNum--},
+            onClick = {count = false
+                if(itemNum>0)itemNum--
+                      count = true
+                      },
             modifier = Modifier.width(200.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
         ) {
             Text(text = "Previous", modifier = Modifier.padding(all = 40.dp), fontSize = 15.sp)
@@ -121,7 +128,11 @@ Column(
         //Spacer(modifier = Modifier.weight(.25f))
         Button(
             onClick = {
-                if(itemNum<toSize)itemNum++
+                if(itemNum<toSize){
+                    count = false
+                    itemNum++
+                    count = true
+                }
                 else{congrats = true}
                       },
             modifier = Modifier.width(200.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))

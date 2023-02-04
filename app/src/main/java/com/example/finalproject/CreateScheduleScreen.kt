@@ -196,7 +196,7 @@ fun CreateScheduleScreen(
             }
             Row {
                 Button(
-                    onClick = { items.add(TextFieldValue(text = ""));timerTimes.add("") },
+                    onClick = { items.add(TextFieldValue(text = ""));timerTimes.add("45") },
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
                 ) {
                     Text(text = "Add Task")
@@ -215,6 +215,7 @@ fun CreateScheduleScreen(
                                 for (i in 0 until items.size) {
                                     itemListOfStrings.add(items[i].text)
                                     timerListOfStrings.add(timerTimes[i])
+
                                 }
                                 val alarmTime = alarmTime
 
