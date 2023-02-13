@@ -1,4 +1,7 @@
 package com.example.finalproject
+import android.media.MediaPlayer
+import android.os.CountDownTimer
+import android.util.Log
 import androidx.compose.ui.res.colorResource
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -14,6 +17,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -63,6 +67,12 @@ fun TwoItemSched(
     var popUpYN by remember{ mutableStateOf(false) }
     var itemNum by remember { mutableStateOf(0) }
 
+    val mContext = LocalContext.current
+    var mediaPlayer by remember {mutableStateOf(MediaPlayer.create(mContext, R.raw.timerbeep) )}
+
+    var timer1 by remember { mutableStateOf(if(schedule != null){createTimer(schedule.items.scheduleTimers[itemNum].toLong(),mediaPlayer )}else{createTimer(0,mediaPlayer )})}
+
+
     if(popUpYN){
         PopUpCongrats {
             navController.navigate(Screens.Schedule.route){
@@ -84,7 +94,8 @@ fun TwoItemSched(
                     .weight(1f),
                 fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
             )
-            Button(onClick = {navController.navigate(route = Screens.Schedule.route)}, modifier = Modifier.width(150.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.TitleGreen))) {
+            Button(onClick = {timer1.cancel()
+                navController.navigate(route = Screens.Schedule.route)}, modifier = Modifier.width(150.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.TitleGreen))) {
                 Text(text = "exit", modifier = Modifier.padding(all = 20.dp))
             }
         }
@@ -165,7 +176,12 @@ fun TwoItemSched(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Button(
-                onClick = {if(itemNum>0)itemNum--},
+                onClick = {if(itemNum>0)itemNum--
+                    timer1.cancel()
+                    if (schedule != null) {
+                        timer1 = createTimer(schedule.items.scheduleTimers[itemNum].toLong(),mediaPlayer )
+                    }
+                          },
                 modifier = Modifier.width(200.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
             ) {
                 Text(text = "Previous", modifier = Modifier.padding(all = 10.dp), fontSize = 13.sp)
@@ -173,7 +189,13 @@ fun TwoItemSched(
             //Spacer(modifier = Modifier.weight(.25f))
             Button(
                 onClick = {
-                    if(itemNum<=toSize)itemNum++
+                    if(itemNum<=toSize){itemNum++
+                        timer1.cancel()
+                        if (schedule != null) {
+                            timer1 = createTimer(schedule.items.scheduleTimers[itemNum].toLong(),mediaPlayer )
+                        }
+                    }
+
                     if(itemNum>toSize){
 
                         popUpYN = true
@@ -189,16 +211,19 @@ fun TwoItemSched(
         }
         Column(Modifier.height(90.dp)) {
             Row {
-                Button(onClick = {navController.navigate("${Screens.Checklist.route}/${scheduleID}")  }, enabled = true, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))) {
+                Button(onClick = {timer1.cancel()
+                    navController.navigate("${Screens.Checklist.route}/${scheduleID}")  }, enabled = true, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))) {
                     Text(text = "Checklist")
                 }
                 Spacer(modifier = Modifier.weight(0.5f))
 
-                Button(onClick = {navController.navigate("${Screens.ThisThen.route}/${scheduleID}")  }, enabled = false, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))  ) {
+                Button(onClick = {timer1.cancel()
+                    navController.navigate("${Screens.ThisThen.route}/${scheduleID}")  }, enabled = false, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))  ) {
                     Text(text = "This Then")
                 }
                 Spacer(modifier = Modifier.weight(0.5f))
-                Button(onClick = {navController.navigate("${Screens.ItembyItem.route}/${scheduleID}")  }, enabled = true, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen)) ) {
+                Button(onClick = {timer1.cancel()
+                    navController.navigate("${Screens.ItembyItem.route}/${scheduleID}")  }, enabled = true, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen)) ) {
                     Text(text = "One At a Time")
                 }
             }

@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import android.os.CountDownTimer
+import android.util.Log
 
 
 @Composable
@@ -32,14 +34,7 @@ fun ItemByItemSched(
     viewModel: MainViewModel
 
 ) {
-    val mContext = LocalContext.current
-    var count by remember { mutableStateOf(true) }
 
-    //var mMediaPlayer: MediaPlayer? = null
-    //val mMediaPlayer = MediaPlayer.create(mContext, R.raw.timerbeep)
-
-
-    //mMediaPlayer.start()
     viewModel.findSchedule(scheduleID)
     val schedule: Schedule? = viewModel.searchResults.observeAsState().value?.get(0)
     var itemNum by remember { mutableStateOf(0) }
@@ -54,6 +49,20 @@ fun ItemByItemSched(
             }
         }
     }
+
+
+    val mContext = LocalContext.current
+    var mediaPlayer by remember {mutableStateOf(MediaPlayer.create(mContext, R.raw.timerbeep) )}
+
+    var timer1 by remember { mutableStateOf(if(schedule != null){createTimer(schedule.items.scheduleTimers[itemNum].toLong(),mediaPlayer )}else{Log.d("TAG", "nothin was created")
+        createTimer(0,mediaPlayer )})}
+
+
+
+
+
+
+
 
 Column(
     Modifier
@@ -70,7 +79,8 @@ Column(
                     .weight(1f),
                 fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
             )
-            Button(onClick = {navController.navigate(route = Screens.Schedule.route)}, modifier = Modifier.width(150.dp),
+            Button(onClick = {timer1.cancel()
+                navController.navigate(route = Screens.Schedule.route)}, modifier = Modifier.width(150.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.TitleGreen))) {
                 Text(text = "exit", modifier = Modifier.padding(all = 20.dp))
             }
@@ -102,12 +112,36 @@ Column(
     }
     /*
     Plan:
-    pressing next cancels timer and moves to next timer
+    opening the page you create a timer
+    pressing next cancels the timer and creates a new one
+    previous does the same
+
 
 
 
 
      */
+//    var millisInFuture by remember { mutableStateOf(schedule.items.scheduleTimers[itemNum].toLong()) }
+//    val countDownTimer =
+//        object : CountDownTimer(millisInFuture, 1000) {
+//            override fun onTick(millisUntilFinished: Long) {
+//                Log.d("TAG", "onTick: ")
+//            }
+//
+//            override fun onFinish() {
+//                mediaPlayer.start()
+//            }
+//        }
+//    if (schedule != null) {
+//        if(schedule.items.scheduleTimers[itemNum] == "25"){
+//            Log.d("TAG", "onTick: ")
+//            createTimer(schedule.items.scheduleTimers[itemNum].toLong(), ,mediaPlayer )
+//        }
+//    }
+
+
+
+
 
 
     Row(
@@ -117,9 +151,12 @@ Column(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Button(
-            onClick = {count = false
-                if(itemNum>0)itemNum--
-                      count = true
+            onClick = {
+                if(itemNum>0){itemNum--}
+                timer1.cancel()
+                if (schedule != null) {
+                    timer1 = createTimer(schedule.items.scheduleTimers[itemNum].toLong(),mediaPlayer )
+                }
                       },
             modifier = Modifier.width(200.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
         ) {
@@ -129,9 +166,11 @@ Column(
         Button(
             onClick = {
                 if(itemNum<toSize){
-                    count = false
                     itemNum++
-                    count = true
+                    timer1.cancel()
+                    if (schedule != null) {
+                        timer1 = createTimer(schedule.items.scheduleTimers[itemNum].toLong(),mediaPlayer )
+                    }
                 }
                 else{congrats = true}
                       },
@@ -142,18 +181,21 @@ Column(
     }
     Column(Modifier.height(90.dp)) {
         Row {
-            Button(onClick = {navController.navigate("${Screens.Checklist.route}/${scheduleID}")  }, enabled = true, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))) {
+            Button(onClick = {timer1.cancel()
+                navController.navigate("${Screens.Checklist.route}/${scheduleID}")  }, enabled = true, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))) {
                 Text(text = "Checklist")
             }
             Spacer(modifier = Modifier.weight(0.5f))
 
             if (schedule != null){
-                Button(onClick = {navController.navigate("${Screens.ThisThen.route}/${scheduleID}")  }, enabled = schedule.items.scheduleItems.size>1, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))  ) {
+                Button(onClick = {timer1.cancel()
+                    navController.navigate("${Screens.ThisThen.route}/${scheduleID}")  }, enabled = schedule.items.scheduleItems.size>1, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))  ) {
                     Text(text = "This Then")
                 }
             }
             Spacer(modifier = Modifier.weight(0.5f))
-            Button(onClick = {navController.navigate("${Screens.ItembyItem.route}/${scheduleID}")  }, enabled = false, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen)) ) {
+            Button(onClick = {timer1.cancel()
+                navController.navigate("${Screens.ItembyItem.route}/${scheduleID}")  }, enabled = false, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen)) ) {
                 Text(text = "One At a Time")
             }
         }
@@ -163,29 +205,15 @@ Column(
 
 }
 
+fun createTimer(time: Long, mediaPlayer: MediaPlayer): CountDownTimer {
+    return object : CountDownTimer(time * 60000, 1000) {
+        override fun onTick(millisUntilFinished: Long) {
+            Log.d("TAG", "onTick: $millisUntilFinished")
+        }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//        val list = SnapshotStateList<String>()
-//        val items = ScheduleItems(list)
-//        val schedTest = Schedule("Test1",items)
-//
-//        list.add("Hi")
-//        list.add("Middle")
-//        list.add("Bye")
-//        list.add("After End")
-//        list.add("Later")
-//    list.add("Later")
-//    list.add("Later")
-//    list.add("Later")
-//    list.add("Later")
-//    list.add("Later")
-//    list.add("Last")
-//
-//        var navController = rememberNavController()
-//        //SetupNavGraph(navController = navController, viewModel = null)
-////        ItemByItemSched(schedTest, navController = navController)
-//
-//}
-//
+        override fun onFinish() {
+            mediaPlayer.start()
+        }
+    }.start()
+}
+
