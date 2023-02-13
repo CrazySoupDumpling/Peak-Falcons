@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "schedules")
-class Schedule constructor(name: String, items: ScheduleItems, startTime: String ){
+class Schedule constructor(name: String, items: ScheduleItems, startTime: String, alarmEnabled :Boolean ){
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
@@ -24,6 +24,10 @@ class Schedule constructor(name: String, items: ScheduleItems, startTime: String
     @ColumnInfo(name = "alarmTime")
     @NonNull
     var startTime: String = startTime
+
+    @ColumnInfo(name = "alarmEnabled")
+    @NonNull
+    var alarmEnabled: Boolean = alarmEnabled
 }
 
 

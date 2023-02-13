@@ -1,6 +1,7 @@
 package com.example.finalproject
 
 import android.app.TimePickerDialog
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -22,6 +23,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import java.util.*
 
+fun checkDigit(number: Int): String? {
+    return if (number <= 9) "0$number" else number.toString()
+}
 
 @Composable
 fun CreateScheduleScreen(
@@ -30,7 +34,9 @@ fun CreateScheduleScreen(
 ) {
 
 
-    Column(modifier = Modifier.fillMaxHeight().background(colorResource(R.color.Background))) {
+    Column(modifier = Modifier
+        .fillMaxHeight()
+        .background(colorResource(R.color.Background))) {
 
         val scheduleName = remember { mutableStateOf(TextFieldValue()) }
         val items = remember {
@@ -40,10 +46,12 @@ fun CreateScheduleScreen(
         val timerTimes = remember {
             mutableStateListOf<String>()
         }
-        var alarmTime = ""
+        var alarmTime = remember{mutableStateOf("N/A")}
 
         Column(
-            modifier = Modifier.verticalScroll(rememberScrollState()).weight(1f)
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .weight(1f)
         ) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 Spacer(modifier = Modifier.weight(0.5f))
@@ -75,7 +83,7 @@ fun CreateScheduleScreen(
                 val mTimePickerDialog = TimePickerDialog(
                     context,
                     {_, mHour : Int, mMinute: Int ->
-                        alarmTime = "$mHour:$mMinute"
+                        alarmTime.value = "${checkDigit(mHour)}:${checkDigit(mMinute)}"
                     }, mHour, mMinute, false
                 )
                 TextField(
@@ -102,67 +110,80 @@ fun CreateScheduleScreen(
 
 
             for (counter in 0 until items.size) {
-                //timerTimes[counter] = "45"
                 val timeAllocated = remember { mutableStateOf(TextFieldValue()) }
                 val temp = timeAllocated.value
                 var openDialog by remember{ mutableStateOf(false) }
-                if(openDialog){AlertDialog(
+                if(openDialog) {
+                    AlertDialog(
 
-                    onDismissRequest = {},
-                    title = {
-                        Text(text = "Set a time limit")
-                    },
-                    text = {
-                        TextField(
-                            value = timeAllocated.value,
-                            label = { Text("Enter number of minutes allocated") },
-                            onValueChange = { timeAllocated.value = it },
-                            colors = TextFieldDefaults.textFieldColors(
-                                focusedIndicatorColor = colorResource(R.color.SubGreen),
-                                cursorColor = colorResource(R.color.SubGreen),
-                                placeholderColor = colorResource(R.color.SubGreen),
-                                trailingIconColor = colorResource(R.color.SubGreen)
-                            ),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                        )
-                    },
-                    confirmButton = {
-                        Row(
-                            modifier = Modifier
+                        onDismissRequest = {},
+                        title = {
+                            Text(text = "Set a time limit")
+                        },
+                        text = {
+                            TextField(
+                                value = timeAllocated.value,
+                                label = { Text("Enter number of minutes allocated") },
+                                onValueChange = { timeAllocated.value = it },
+                                colors = TextFieldDefaults.textFieldColors(
+                                    focusedIndicatorColor = colorResource(R.color.SubGreen),
+                                    cursorColor = colorResource(R.color.SubGreen),
+                                    placeholderColor = colorResource(R.color.SubGreen),
+                                    trailingIconColor = colorResource(R.color.SubGreen)
+                                ),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            )
+                        },
+                        confirmButton = {
+                            Row(
+                                modifier = Modifier
 
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Button(
-                                onClick = {
-                                    if(temp.text == ""){
-                                    timerTimes[counter] = "45"
-                                    timeAllocated.value = temp}else{
-                                        timerTimes[counter] = temp.text
-                                        timeAllocated.value = temp
-                                    }
-                                    openDialog = false
-                                          },
-                                modifier = Modifier.width(150.dp), colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
+                                    .fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(text = "Cancel", modifier = Modifier.padding(all = 10.dp), fontSize = 11.sp)
-                            }
+                                Button(
+                                    onClick = {
+                                        if (temp.text == "") {
+                                            timerTimes[counter] = "45"
+                                            timeAllocated.value = temp
+                                        } else {
+                                            timerTimes[counter] = temp.text
+                                            timeAllocated.value = temp
+                                        }
+                                        openDialog = false
+                                    },
+                                    modifier = Modifier.width(150.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = colorResource(R.color.SubGreen)
+                                    )
+                                ) {
+                                    Text(
+                                        text = "Cancel",
+                                        modifier = Modifier.padding(all = 10.dp),
+                                        fontSize = 11.sp
+                                    )
+                                }
+                                Button(
+                                    onClick = {
+                                        Log.e("e", timerTimes[counter].toString())
+                                        timerTimes[counter] = timeAllocated.value.text
+                                        openDialog = false
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = colorResource(R.color.SubGreen)
+                                    ),
+                                    modifier = Modifier.width(150.dp)
+                                ) {
 
-                            Button(
-                                onClick = {
-                                    openDialog = false
-                                    timerTimes[counter] = timeAllocated.value.text
-                                }, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen)),
-                                modifier = Modifier.width(150.dp)
-                            ) {
-
-                                Text(text = "Confirm", modifier = Modifier.padding(all = 10.dp), fontSize = 11.sp)
+                                    Text(
+                                        text = "Confirm",
+                                        modifier = Modifier.padding(all = 10.dp),
+                                        fontSize = 11.sp
+                                    )
+                                }
                             }
                         }
-                    }
-
-
-                )
+                    )
                 }
 
 
@@ -214,16 +235,16 @@ fun CreateScheduleScreen(
                                     SnapshotStateList()
                                 for (i in 0 until items.size) {
                                     itemListOfStrings.add(items[i].text)
+//                                    if (timerTimes[i] == ""){timerListOfStrings.add("45")}
                                     timerListOfStrings.add(timerTimes[i])
 
                                 }
-                                val alarmTime = alarmTime
 
                                 viewModel.insertSchedule(
                                     Schedule(
                                         name = scheduleName.value.text,
                                         items = ScheduleItems(itemListOfStrings, timerListOfStrings)
-                                        , startTime = alarmTime
+                                        , startTime = alarmTime.value, alarmEnabled = false
                                     )
                                 )
                                 navController.navigate(Screens.Schedule.route)
@@ -239,6 +260,4 @@ fun CreateScheduleScreen(
 
 
     }
-
-
 }

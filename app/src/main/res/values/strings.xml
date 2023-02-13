@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">FinalProject</string>
+    <string name="app_name">Peak Scheduler</string>
+    <string name="channel_name">channelA</string>
+    <string name="channel_description">Channel for Peak Scheduler alarms</string>
 </resources>

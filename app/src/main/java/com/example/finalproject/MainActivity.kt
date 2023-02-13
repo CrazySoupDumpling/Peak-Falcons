@@ -20,6 +20,7 @@ import com.example.finalproject.ui.theme.FinalProjectTheme
 class MainActivity : ComponentActivity() {
     lateinit var navController: NavHostController
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

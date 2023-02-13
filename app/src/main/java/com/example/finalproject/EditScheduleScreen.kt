@@ -1,6 +1,7 @@
 package com.example.finalproject
 
 import android.app.TimePickerDialog
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -46,7 +47,7 @@ fun EditScheduleScreen(
     val mCalendar = Calendar.getInstance()
     val mHour = mCalendar[Calendar.HOUR_OF_DAY]
     val mMinute = mCalendar[Calendar.MINUTE]
-    var alarmTime = ""
+    var alarmTime = remember{mutableStateOf("")}
     val newScheduleName = remember { mutableStateOf(TextFieldValue()) }
     Column(modifier = Modifier.fillMaxHeight().background(colorResource(R.color.Background))) {
         Column(modifier = Modifier
@@ -74,7 +75,7 @@ fun EditScheduleScreen(
                     val mTimePickerDialog = TimePickerDialog(
                         context,
                         {_, mHour : Int, mMinute: Int ->
-                            alarmTime = "$mHour:$mMinute"
+                            alarmTime.value = "$mHour:$mMinute"
                         }, mHour, mMinute, false
                     )
                     TextField(
@@ -184,9 +185,11 @@ fun EditScheduleScreen(
                             schedule.name = newScheduleName.value.text
                         }
                         schedule.items = ScheduleItems(itemList, timerList)
-//                        if(alarmTime != ""){
-//                            schedule.startTime = alarmTime
-//                        }
+                        Log.e("e",alarmTime.value)
+//                        alarmTime = "12:12"
+                        if(alarmTime.value != ""){
+                            schedule.startTime = alarmTime.value
+                        }
 
                         viewModel.updateSchedule(schedule)
                         navController.navigate(Screens.Edit.route)

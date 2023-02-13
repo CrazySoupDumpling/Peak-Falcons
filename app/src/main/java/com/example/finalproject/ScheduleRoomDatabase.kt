@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @TypeConverters(value = [MyTypeConverters::class])
-@Database(entities = [(Schedule::class)], version = 7, exportSchema = true)
+@Database(entities = [(Schedule::class)], version = 8, exportSchema = true)
 abstract class ScheduleRoomDatabase: RoomDatabase() {
 
     abstract fun scheduleDao(): ScheduleDao
