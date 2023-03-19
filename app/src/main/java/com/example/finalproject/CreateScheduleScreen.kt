@@ -166,7 +166,11 @@ fun CreateScheduleScreen(
                                 Button(
                                     onClick = {
                                         Log.e("e", timerTimes[counter].toString())
-                                        timerTimes[counter] = timeAllocated.value.text
+                                        if (timeAllocated.value.text == "") {
+                                            timerTimes[counter] = "45"
+                                        }else{
+                                            timerTimes[counter] = timeAllocated.value.text
+                                        }
                                         openDialog = false
                                     },
                                     colors = ButtonDefaults.buttonColors(

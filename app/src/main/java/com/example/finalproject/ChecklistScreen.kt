@@ -28,6 +28,7 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.delay
 
+
 @Composable
 fun ChecklistScreen(
     scheduleID: Int,
@@ -39,10 +40,10 @@ fun ChecklistScreen(
     viewModel.findSchedule(scheduleID)
     val schedule: Schedule? = viewModel.searchResults.observeAsState().value?.get(0)
     var itemNum by remember { mutableStateOf(0) }
-    var congrats by remember { mutableStateOf(false)}
-    if(congrats){
+    var congrats by remember { mutableStateOf(false) }
+    if (congrats) {
         PopUpCongrats {
-            navController.navigate(Screens.Schedule.route){
+            navController.navigate(Screens.Schedule.route) {
                 popUpTo(Screens.Schedule.route) {
                     inclusive = true
                 }
@@ -53,134 +54,183 @@ fun ChecklistScreen(
 
 
     val mContext = LocalContext.current
-    var mediaPlayer by remember {mutableStateOf(MediaPlayer.create(mContext, R.raw.timerbeep) )}
+    var mediaPlayer by remember { mutableStateOf(MediaPlayer.create(mContext, R.raw.timerbeep)) }
 
-    if(schedule == null)Log.d("TAG", "nothin was created")
+    if (schedule == null) Log.d("TAG", "nothin was created")
 
     val checkedList = remember { mutableStateListOf<Boolean>() }
-    Column(
-        Modifier
-            .fillMaxHeight()
-            .background(colorResource(R.color.Background))) {
-        var timer1 by remember { mutableStateOf(if(schedule != null){createTimer(schedule.items.scheduleTimers[itemNum].toLong(),mediaPlayer )}else{Log.d("TAG", "nothin was created")
-            createTimer(45,mediaPlayer )})}
+    var waitTime by remember { mutableStateOf(1) }
+    val loadTime = remember { mutableStateListOf<Int>() }
+    loadTime.add(1)
+    var timer0 by remember {
+        mutableStateOf(
+            createTimer1(3, loadTime)
+        )
+    }
+
+    //timer0.cancel()
+    if (loadTime[0] == 0) {
         Column(
             Modifier
-                .verticalScroll(rememberScrollState())
-                .weight(1f)) {
-
-            Row(Modifier.fillMaxWidth()) {
-                Text(
-
-                    text = schedule?.name.toString(),
-                    modifier = Modifier
-                        .padding(all = 20.dp)
-                        .weight(1f),
-                    fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
+                .fillMaxHeight()
+                .background(colorResource(R.color.Background))
+        ) {
+            var timer1 by remember {
+                mutableStateOf(
+                    if (schedule != null) {
+                        createTimer(schedule.items.scheduleTimers[itemNum].toLong(), mediaPlayer)
+                    } else {
+                        Log.d("TAG", "nothin was created")
+                        createTimer(45, mediaPlayer)
+                    }
                 )
-                Button(
-                    onClick = {timer1.cancel()
-                        navController.navigate(route = Screens.Schedule.route) },
-                    modifier = Modifier.width(150.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.TitleGreen))
-                ) {
-                    Text(text = "exit", modifier = Modifier.padding(all = 20.dp))
+            }
+            Column(
+                Modifier
+                    .verticalScroll(rememberScrollState())
+                    .weight(1f)
+            ) {
+
+                Row(Modifier.fillMaxWidth()) {
+                    Text(
+
+                        text = schedule?.name.toString(),
+                        modifier = Modifier
+                            .padding(all = 20.dp)
+                            .weight(1f),
+                        fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center
+                    )
+                    Button(
+                        onClick = {
+                            timer1.cancel()
+                            navController.navigate(route = Screens.Schedule.route)
+                        },
+                        modifier = Modifier.width(150.dp),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.TitleGreen))
+                    ) {
+                        Text(text = "exit", modifier = Modifier.padding(all = 20.dp))
+                    }
+                }
+
+                var GobackPOP by remember { mutableStateOf(false) }
+                if (GobackPOP) GoBack(GobackPOP)
+                if (schedule != null) {
+
+
+                    for (i in 0 until schedule.items.scheduleItems.size) {
+                        if (i >= checkedList.size) {
+                            checkedList.add(false)
+                        }
+                        Button(
+                            onClick = {
+                                if (i == itemNum) {
+                                    Log.d("TAG", "itemNum: $itemNum")
+                                    if (checkedList[i]) {
+                                        itemNum--
+                                        checkedList[i] = !checkedList[i]
+                                        timer1.cancel()
+                                        timer1 = createTimer(
+                                            schedule.items.scheduleTimers[itemNum].toLong(),
+                                            mediaPlayer
+                                        )
+
+                                    }
+                                    if (!checkedList[i]) {
+                                        itemNum++
+                                        checkedList[i] = !checkedList[i]
+                                        timer1.cancel()
+                                        timer1 = createTimer(
+                                            schedule.items.scheduleTimers[itemNum].toLong(),
+                                            mediaPlayer
+                                        )
+                                    }
+                                    Log.d("TAG", "itemNum: $itemNum")
+                                } else if (i == itemNum - 1 && checkedList[i]) {
+                                    itemNum--
+                                    checkedList[i] = !checkedList[i]
+                                    timer1.cancel()
+                                    if (schedule != null) {
+                                        timer1 = createTimer(
+                                            schedule.items.scheduleTimers[itemNum].toLong(),
+                                            mediaPlayer
+                                        )
+                                    }
+                                } else {
+                                    GobackPOP = true
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 10.dp)
+                                .padding(vertical = 20.dp)
+                                .height(100.dp),
+                            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
+                        ) {
+                            if (checkedList[i]) {
+
+                                Image(
+                                    painterResource(R.drawable.completedcheck),
+                                    contentDescription = "Item Completed",
+                                    modifier = Modifier
+                                        .padding(horizontal = 5.dp)
+                                        .align(Alignment.CenterVertically)
+                                )
+                            } else {
+                                Image(
+                                    painterResource(R.drawable.uncompletedcheck),
+                                    contentDescription = "Item Not Completed",
+                                    modifier = Modifier
+                                        .padding(horizontal = 5.dp)
+                                        .align(Alignment.CenterVertically)
+                                )
+                            }
+//                Spacer(modifier = Modifier.weight(1f))
+                            Text(
+                                text = schedule.items.scheduleItems[i],
+                                modifier = Modifier
+                                    .padding(all = 20.dp)
+                                    .weight(1f)
+                            )
+                        }
+                    }
                 }
             }
-
-            var GobackPOP by remember { mutableStateOf(false) }
-            if(GobackPOP) GoBack(GobackPOP)
-            if (schedule != null) {
-
-
-                for (i in 0 until schedule.items.scheduleItems.size) {
-                    if (i >= checkedList.size) {
-                        checkedList.add(false)
-                    }
+            Column(Modifier.height(90.dp)) {
+                Row {
                     Button(
-                        onClick = {if(i == itemNum){
-                            Log.d("TAG", "itemNum: $itemNum")
-                            if(checkedList[i]){
-                                itemNum--
-                                checkedList[i] = !checkedList[i]
-                                timer1.cancel()
-                                if (schedule != null) {
-                                    timer1 = createTimer(schedule.items.scheduleTimers[itemNum].toLong(),mediaPlayer )
-                                }
-                            }
-                            if(!checkedList[i]){
-                                itemNum++
-                                checkedList[i] = !checkedList[i]
-                                timer1.cancel()
-                                if (schedule != null) {
-                                    timer1 = createTimer(schedule.items.scheduleTimers[itemNum].toLong(),mediaPlayer )
-                                }
-                            }
-                            Log.d("TAG", "itemNum: $itemNum")
-                        }else if(i == itemNum-1 && checkedList[i]){
-                            itemNum--
-                            checkedList[i] = !checkedList[i]
+                        onClick = {
                             timer1.cancel()
-                            if (schedule != null) {
-                                timer1 = createTimer(schedule.items.scheduleTimers[itemNum].toLong(),mediaPlayer )
-                            }
-                        }
-                        else{
-                            GobackPOP = true
-                        } },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp)
-                            .padding(vertical = 20.dp)
-                            .height(100.dp),
+                            navController.navigate("${Screens.Checklist.route}/${scheduleID}")
+                        },
+                        enabled = false,
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
                     ) {
-                        if (checkedList[i]) {
-
-                            Image(
-                                painterResource(R.drawable.completedcheck),
-                                contentDescription = "Item Completed",
-                                modifier = Modifier
-                                    .padding(horizontal = 5.dp)
-                                    .align(Alignment.CenterVertically)
-                            )
-                        } else {
-                            Image(
-                                painterResource(R.drawable.uncompletedcheck),
-                                contentDescription = "Item Not Completed",
-                                modifier = Modifier
-                                    .padding(horizontal = 5.dp)
-                                    .align(Alignment.CenterVertically)
-                            )
+                        Text(text = "Checklist")
+                    }
+                    Spacer(modifier = Modifier.weight(0.5f))
+                    if (schedule != null) {
+                        Button(
+                            onClick = {
+                                timer1.cancel()
+                                navController.navigate("${Screens.ThisThen.route}/${scheduleID}")
+                            },
+                            enabled = schedule.items.scheduleItems.size > 1,
+                            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
+                        ) {
+                            Text(text = "This Then")
                         }
-//                Spacer(modifier = Modifier.weight(1f))
-                        Text(
-                            text = schedule.items.scheduleItems[i],
-                            modifier = Modifier
-                                .padding(all = 20.dp)
-                                .weight(1f)
-                        )
                     }
-                }
-            }
-        }
-        Column(Modifier.height(90.dp)) {
-            Row {
-                Button(onClick = {timer1.cancel()
-                    navController.navigate("${Screens.Checklist.route}/${scheduleID}")  }, enabled = false, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))) {
-                    Text(text = "Checklist")
-                }
-                Spacer(modifier = Modifier.weight(0.5f))
-                if (schedule != null){
-                    Button(onClick = {timer1.cancel()
-                        navController.navigate("${Screens.ThisThen.route}/${scheduleID}")  }, enabled = schedule.items.scheduleItems.size>1, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))  ) {
-                        Text(text = "This Then")
+                    Spacer(modifier = Modifier.weight(0.5f))
+                    Button(
+                        onClick = {
+                            timer1.cancel()
+                            navController.navigate("${Screens.ItembyItem.route}/${scheduleID}")
+                        },
+                        enabled = true,
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen))
+                    ) {
+                        Text(text = "One At a Time")
                     }
-                }
-                Spacer(modifier = Modifier.weight(0.5f))
-                Button(onClick = {timer1.cancel()
-                    navController.navigate("${Screens.ItembyItem.route}/${scheduleID}")  }, enabled = true, colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.SubGreen)) ) {
-                    Text(text = "One At a Time")
                 }
             }
         }
@@ -193,30 +243,35 @@ fun GoBack(Pop: Boolean) {
         Spacer(modifier = Modifier.height(100.dp))
         Box {
             var popFr by remember { mutableStateOf(Pop) }
-            if(popFr)
-            AlertDialog(
+            if(popFr) {
+                AlertDialog(
 
-                onDismissRequest = {popFr = false },
-                title = {
-                    Text(text = "Finish Your Previous Tasks First")
-                },
-                text = {
-                    Text("You tried to skip a task, finish those first before moving on! You got this!")
-                },
-                buttons = {}
-            )
+                    onDismissRequest = { popFr = false },
+                    title = {
+                        Text(text = "Finish Your Previous Tasks First")
+                    },
+                    text = {
+                        Text("You tried to skip a task, finish those first before moving on! You got this!")
+                    },
+                    buttons = {}
+                )
+            }
         }
     }
 }
 
-fun createTimer1(time: Long, mediaPlayer: MediaPlayer): CountDownTimer {
-    return object : CountDownTimer(time * 60000, 1000) {
+fun createTimer1(time: Long, list: MutableList<Int>): CountDownTimer {
+    return object : CountDownTimer(time * 1000, 1000) {
         override fun onTick(millisUntilFinished: Long) {
             Log.d("TAG", "onTick: $millisUntilFinished")
         }
 
         override fun onFinish() {
-
+            list[0] = 0
         }
     }.start()
+}
+fun startCheck(YN: Boolean): Boolean{
+
+    return true
 }
